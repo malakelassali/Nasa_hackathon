@@ -12,7 +12,7 @@ from pydantic import BaseModel, StringConstraints
 from .audio import MAX_BYTES, InvalidAudio, read_recording
 from .conversation import Assistant, SessionMissing
 from .farm import DevelopmentFarmTools
-from .models import ChatModel, Recognizer, Synthesizer
+from .models import FARM_CONTEXT, ChatModel, Recognizer, Synthesizer
 
 LOG = logging.getLogger(__name__)
 WEB = Path(__file__).resolve().parent / "web"
@@ -135,7 +135,8 @@ def configured_app():
         return create_app()
     if mode != "local":
         raise ValueError("AGRIX_MODE must be local or demo")
+    context = FARM_CONTEXT if os.getenv("AGRIX_ASR_FARM_GLOSSARY") == "1" else ""
     return create_app(
-        asr=Recognizer(), synth=Synthesizer(),
+        asr=Recognizer(qwen_context=context), synth=Synthesizer(),
         chat=ChatModel() if os.getenv("AGRIX_CHAT_MODEL", "local") != "rules" else None,
     )

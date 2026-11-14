@@ -11,6 +11,15 @@ MOULSOT = "atlasia/moulsot.v0.3"
 KANDIR = "KandirResearch/DarijaTTS-v0.1-500M"
 ATLAS_CHAT = "MBZUAI-Paris/Atlas-Chat-2B"
 QWEN_CHAT = "Qwen/Qwen2.5-1.5B-Instruct"
+FARM_GLOSSARY = (
+    "القمح", "الشعير", "العدس", "الحمص", "السقي", "هكتار", "قنطار",
+    "blé", "orge", "irrigation", "goutte-à-goutte", "pompe",
+)
+FARM_CONTEXT = (
+    "Transcribe exactly what is spoken in Moroccan Darija and French. "
+    "The recording may contain these agricultural terms: " + "، ".join(FARM_GLOSSARY)
+    + ". Include a term only if the speaker says it."
+)
 
 
 def device(torch):

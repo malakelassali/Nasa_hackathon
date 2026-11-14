@@ -14,17 +14,7 @@ from .audio import read_recording
 from .conversation import Assistant
 from .corpus import manifest_rows, normalize_transcript
 from .farm import DevelopmentFarmTools
-from .models import ChatModel, Recognizer, Synthesizer, device
-
-FARM_GLOSSARY = (
-    "القمح", "الشعير", "العدس", "الحمص", "السقي", "هكتار", "قنطار",
-    "blé", "orge", "irrigation", "goutte-à-goutte", "pompe",
-)
-FARM_CONTEXT = (
-    "Transcribe exactly what is spoken in Moroccan Darija and French. "
-    "The recording may contain these agricultural terms: " + "، ".join(FARM_GLOSSARY)
-    + ". Include a term only if the speaker says it."
-)
+from .models import FARM_CONTEXT, FARM_GLOSSARY, ChatModel, Recognizer, Synthesizer, device
 
 
 def distance(left, right):

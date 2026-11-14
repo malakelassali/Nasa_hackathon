@@ -8,6 +8,7 @@ Usage:
   bash scripts/gpu-asr.sh setup
   bash scripts/gpu-asr.sh benchmark MANIFEST OUTPUT_DIR
   bash scripts/gpu-asr.sh tune-moulsot MANIFEST OUTPUT_DIR
+  bash scripts/gpu-asr.sh voice-demo
   bash scripts/gpu-asr.sh train ANNOTATION_DIR RUN_DIR [CHECKPOINT]
 
 Training expects consented WAV/JSON pairs from at least three speakers.
@@ -28,7 +29,9 @@ if [[ ${1:-} == setup && $# == 1 ]]; then
     "$py" -m pip install 'torch==2.8.0' --index-url "${AGRIX_TORCH_INDEX:-https://download.pytorch.org/whl/cu128}"
     "$py" -m pip install -r requirements-training.txt -r requirements-test.txt
     "$py" -m pip check
-elif [[ ( ${1:-} == benchmark || ${1:-} == tune-moulsot ) && $# == 3 ]] || [[ ${1:-} == train && ( $# == 3 || $# == 4 ) ]]; then
+elif [[ ( ${1:-} == benchmark || ${1:-} == tune-moulsot ) && $# == 3 ]] \
+    || [[ ${1:-} == train && ( $# == 3 || $# == 4 ) ]] \
+    || [[ ${1:-} == voice-demo && $# == 1 ]]; then
     py=.venv-gpu/bin/python
     if [[ ! -x "$py" ]]; then
         echo "Run bash scripts/gpu-asr.sh setup first." >&2
@@ -82,6 +85,37 @@ case "$1" in
             done
         done
         "$py" -m evaluation.summarize_asr --moulsot-tuning "${reports[@]}"
+        ;;
+    voice-demo)
+        export AGRIX_MODE=local AGRIX_CHAT_MODEL=rules
+        export AGRIX_ASR_BACKEND=qwen AGRIX_ASR_MODEL=atlasia/moulsot.v0.3 AGRIX_ASR_FARM_GLOSSARY=1
+        unset AGRIX_ASR_ADAPTER
+        export AGRIX_TTS_BACKEND=speecht5
+        export AGRIX_SPEECHT5_EMBEDDING="${AGRIX_SPEECHT5_EMBEDDING:-data/voice/public-demo-female.npy}"
+        if [[ ! -f "$AGRIX_SPEECHT5_EMBEDDING" ]]; then
+            "$py" - <<'PY'
+import hashlib
+import os
+from pathlib import Path
+
+import numpy as np
+import torch
+from huggingface_hub import hf_hub_download
+
+source = Path(hf_hub_download(
+    "HAMMALE/speecht5-darija", "female_embedding.pt", repo_type="space",
+))
+if hashlib.sha256(source.read_bytes()).hexdigest() != "9f87744b22b910652a6cc2645e99e9c2d6d63d4d8cb5e803dd0b8b520863ea0f":
+    raise SystemExit("The SpeechT5 demo voice file changed. Supply a trusted .npy embedding via AGRIX_SPEECHT5_EMBEDDING.")
+embedding = torch.load(source, map_location="cpu", weights_only=True)
+destination = Path(os.environ["AGRIX_SPEECHT5_EMBEDDING"])
+destination.parent.mkdir(parents=True, exist_ok=True)
+with destination.open("wb") as output:
+    np.save(output, embedding.numpy(), allow_pickle=False)
+PY
+        fi
+        echo "Open http://localhost:8000 in your Windows browser."
+        exec "$py" -m uvicorn agrix_voice.app:configured_app --factory --host 127.0.0.1 --port 8000
         ;;
     train)
         corpus="$3/corpus"

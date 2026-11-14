@@ -35,6 +35,20 @@ bash scripts/gpu-asr.sh tune-moulsot data/darija-pilot/pilot-arabic-script.jsonl
 
 The runner reuses the installed environment and cached model. It compares forced Arabic and automatic language detection, each with and without the same farming glossary. The `arabic-plain` row reruns the original settings. The final table includes word error on clips tagged as code-switched and counts exact glossary terms that appear in a hypothesis but are absent from its reference. Check those differences against the original audio before treating them as insertion errors. Use the pilot to shortlist settings, then validate them on recordings from new speakers. Share the aggregate table. The JSON reports include clip transcripts.
 
+## Talk to the assistant
+
+From Ubuntu on the GPU computer, run the following after setup:
+
+```bash
+cd ~/Nasa_hackathon
+git pull --ff-only origin darija-text-to-speech
+bash scripts/gpu-asr.sh voice-demo
+```
+
+Leave the terminal running and open [localhost:8000](http://localhost:8000) in the Windows browser. Allow microphone access. Click the microphone, speak, and click it again to finish. Review the transcript and click **صيفط**. If the browser blocks autoplay, press Play. The first reply can take longer while SpeechT5 and the vocoder download and load.
+
+Try «العام اللي فات زرعت القمح، ودابا بغيت نبدل شوية». When asked about irrigation, reply «غير الشتا، ما عنديش السقي». The demo uses MoulSot with the farming glossary, a rule-based farming dialogue and the public SpeechT5 demo voice. The crop options are development examples. Inference runs in the local process and the pilot dataset is optional. [SpeechT5 Darija model](https://huggingface.co/HAMMALE/speecht5-darija)
+
 ## 3. Fine-tune after collecting more consented speech
 
 The current 40 clips are enough for the pilot comparison. To train with separate train, validation and test speakers, add at least one more consented speaker. Three speakers only give one speaker per split, so use more speakers and a separate held-out group for a meaningful accuracy claim. Use a consistent Arabic-script Darija reference for Darija words and preserve French words. Place consented per-clip WAV/JSON pairs in `data/incoming`. Follow the [recording guide](../evaluation/RECORDING_GUIDE.md) for additional clips. Preserve the current pilot as a separate evaluation set if you can collect an independent training corpus.

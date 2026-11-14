@@ -9,9 +9,9 @@ from fastapi.testclient import TestClient
 
 from agrix_voice.app import create_app
 from agrix_voice.audio import wav_bytes
-from agrix_voice.benchmark import FARM_CONTEXT, glossary_extra_terms, metrics
+from agrix_voice.benchmark import glossary_extra_terms, metrics
 from agrix_voice.farm import FarmResult
-from agrix_voice.models import Recognizer, normalize_for_speech
+from agrix_voice.models import FARM_CONTEXT, Recognizer, normalize_for_speech
 
 
 class Transcriber:
