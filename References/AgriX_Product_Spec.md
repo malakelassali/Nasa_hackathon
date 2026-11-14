@@ -10,7 +10,7 @@ AgriX opens on an interactive map. The farmer draws and confirms their plot, the
 
 | Step | What the farmer does | What AgriX shows or does |
 |---|---|---|
-| 1. Find the plot | Open the map, zoom to the plot, and draw its boundary. Search by locality or optionally use device location to get close. | Show satellite imagery, a highlighted outline, and the estimated area in hectares. Give clear controls to undo, edit, or redraw the outline. |
+| 1. Find the plot | Open the map, zoom to the plot, and draw its boundary. Search by address, village, locality, or nearby landmark, or optionally use device location to get close. | Show satellite imagery, a highlighted outline, and the estimated area in hectares. Give clear controls to undo, edit, or redraw the outline. |
 | 2. Confirm the plot | Check the outline and tap **Confirm plot**. | Start the analysis immediately. Show progress in everyday language. Keep the plot selected if a source fails and offer a retry for the missing layer. |
 | 3. Review the land | Read the land summary and optionally add known information about soil, water access, and previous crops. | Explain what each finding means for growing crops. Ask focused questions when the answer affects eligibility or cost. Let the farmer choose **I don't know**. |
 | 4. See rotation options | Browse suggested rotations or start a custom rotation. | Use one card per option with the crop sequence, total duration, first-season cash requirement if known, main benefit, and main constraint. |
@@ -24,6 +24,7 @@ AgriX opens on an interactive map. The farmer draws and confirms their plot, the
 ### Map and confirmation
 
 - Make the map the landing screen, with one obvious action to select a plot. On mobile, keep the drawing controls and confirmation button within reach.
+- Offer explicit **Use my phone's location** on phones and **Use device location** on desktop, alongside an address, village, or landmark search. Ask for location permission only when the farmer chooses that action. A device position or search result centers the map; the farmer still draws and confirms the exact plot boundary. Show an approximate device position without implying it is the field boundary. If permission is declined or the device cannot return a location, keep address search and manual map selection available, and preserve the farmer's existing plot and draft.
 - Let farmers trace the boundary by placing and moving points around the field. Show the line, filled area, and calculated hectares before confirmation. Detect invalid boundaries, including crossing edges, and explain how to fix them.
 - Use the confirmed polygon, area, and location for all applicable calculations. Keep the plot when the farmer changes language or edits a rotation. If the polygon changes, refresh the analysis and mark dependent results for recalculation.
 - Display the drawn outline as the farmer's selected area. Let them correct it independently of the satellite basemap.
@@ -86,6 +87,7 @@ Let farmers tap a number to see its inputs. Show a range or **Unavailable** when
 
 - Provide a persistent **Ask AgriX** entry point. The chatbot can answer broad questions about the farm project and use the active plot, selected rotation, scenario, and current assumptions for specific questions.
 - Default to Moroccan Darija **written in Arabic script**. Switch to French or English when selected in chat or explicitly requested, and keep the conversation context. Use short sentences and familiar farming terms.
+- Let farmers record a voice question as an alternative to typing. Provide a visible microphone action, request microphone access when chosen, show a recording indicator and elapsed time, and allow stop or cancel. Before sending, let the farmer play back, rerecord, and review or correct a transcript where available. Send only after the farmer confirms. Keep typing available if access is declined or unavailable, and retain the active plot and plan context. Sent voice messages show their duration and associated transcript. Support the same interface languages as text chat.
 - Cover soil and climate findings, crop choices, differences between plans, cash needs, profitability, market history, suppliers, machinery, labor, seasonal tasks, and how to use the app.
 - Offer contextual prompts such as **شحال خاصني قبل أول بيعة؟** (How much do I need before my first sale?), **واش خاصني نشري الماكينة ولا نقدر نكريها؟** (Do I need to buy the machine or can I rent it?), and **إلا تأخر الشتا، شنو نقدر نزرع؟** (If the rain starts late, what can I plant?).
 - Use the same figures, rules, and sources as the detail screens. Link to the relevant card, estimate, or calendar entry. If an answer depends on an unknown input, say what it is and ask for it. If the farmer asks to try a change, preview the updated plan and let them confirm before saving.
@@ -118,4 +120,5 @@ Use one rainfed Settat example, a locally documented crop shortlist, real NASA r
 - A farmer can create a custom sequence, understand why it fits or needs a change, and open the same detail view once it passes the feasibility check.
 - Changing a cost or budget updates the figures and the explanation. Unverified market prices, supplier listings, field data, and example inputs are visibly labelled.
 - The farmer can complete the flow in all three languages and ask the chatbot about a number or trade-off from the current plan in Arabic-script Darija.
+- A farmer can find an area using an address or device location, then confirm the plot independently. Declined or failed location access offers address search and manual map selection. A voice question can be recorded, stopped, reviewed, and sent; declined microphone access offers typing.
 - In a walkthrough, a first-time farmer can identify the first action, the cash needed before sales, and one condition to verify before committing.
