@@ -138,7 +138,13 @@ def configured_app():
     if mode != "local":
         raise ValueError("AGRIX_MODE must be local or demo")
     context = FARM_CONTEXT if os.getenv("AGRIX_ASR_FARM_GLOSSARY") == "1" else ""
+    asr = Recognizer(qwen_context=context)
+    synth = Synthesizer()
+    if os.getenv("AGRIX_PRELOAD_VOICE") == "1":
+        LOG.warning("Loading speech recognition and synthesis models before serving")
+        asr.model = asr.load()
+        synth.model = synth.load()
     return create_app(
-        asr=Recognizer(qwen_context=context), synth=Synthesizer(),
+        asr=asr, synth=synth,
         chat=ChatModel() if os.getenv("AGRIX_CHAT_MODEL", "local") != "rules" else None,
     )

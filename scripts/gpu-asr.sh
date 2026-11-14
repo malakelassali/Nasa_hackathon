@@ -9,6 +9,7 @@ Usage:
   bash scripts/gpu-asr.sh benchmark MANIFEST OUTPUT_DIR
   bash scripts/gpu-asr.sh tune-moulsot MANIFEST OUTPUT_DIR
   bash scripts/gpu-asr.sh voice-demo
+  bash scripts/gpu-asr.sh voice-server
   bash scripts/gpu-asr.sh train ANNOTATION_DIR RUN_DIR [CHECKPOINT]
 
 Training expects consented WAV/JSON pairs from at least three speakers.
@@ -31,7 +32,7 @@ if [[ ${1:-} == setup && $# == 1 ]]; then
     "$py" -m pip check
 elif [[ ( ${1:-} == benchmark || ${1:-} == tune-moulsot ) && $# == 3 ]] \
     || [[ ${1:-} == train && ( $# == 3 || $# == 4 ) ]] \
-    || [[ ${1:-} == voice-demo && $# == 1 ]]; then
+    || [[ ( ${1:-} == voice-demo || ${1:-} == voice-server ) && $# == 1 ]]; then
     py=.venv-gpu/bin/python
     if [[ ! -x "$py" ]]; then
         echo "Run bash scripts/gpu-asr.sh setup first." >&2
@@ -86,15 +87,25 @@ case "$1" in
         done
         "$py" -m evaluation.summarize_asr --moulsot-tuning "${reports[@]}"
         ;;
-    voice-demo)
+    voice-demo|voice-server)
         export AGRIX_MODE=local AGRIX_CHAT_MODEL=rules
         export AGRIX_ASR_BACKEND=qwen AGRIX_ASR_MODEL=atlasia/moulsot.v0.3 AGRIX_ASR_FARM_GLOSSARY=1
         unset AGRIX_ASR_ADAPTER
         export AGRIX_TTS_BACKEND="${AGRIX_TTS_BACKEND:-speecht5}"
+        if [[ "$1" == voice-server ]]; then
+            export AGRIX_TTS_BACKEND=hadra AGRIX_PRELOAD_VOICE=1 AGRIX_ASR_DTYPE=float32
+            if [[ -z ${AGRIX_TTS_MODEL:-} && -z ${AGRIX_HADRA_REFERENCE_WAV:-} && -z ${AGRIX_HADRA_REFERENCE_TEXT:-} ]]; then
+                export AGRIX_HADRA_REPLY_DIR="${AGRIX_HADRA_REPLY_DIR:-data/voice/hadra-server-f1}"
+            fi
+        fi
         export AGRIX_SPEECHT5_EMBEDDING="${AGRIX_SPEECHT5_EMBEDDING:-data/voice/public-demo-female.npy}"
         if [[ "$AGRIX_TTS_BACKEND" == hadra ]]; then
             export WANDB_MODE=disabled
-            "$py" -c 'import f5_tts.infer.utils_infer'
+            if [[ "$1" == voice-server && -n ${AGRIX_HADRA_REPLY_DIR:-} ]]; then
+                "$py" -m evaluation.render_hadra_replies "$AGRIX_HADRA_REPLY_DIR"
+            else
+                "$py" -c 'import f5_tts.infer.utils_infer'
+            fi
         elif [[ "$AGRIX_TTS_BACKEND" == speecht5 && ! -f "$AGRIX_SPEECHT5_EMBEDDING" ]]; then
             "$py" - <<'PY'
 import hashlib

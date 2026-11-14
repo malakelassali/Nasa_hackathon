@@ -39,7 +39,9 @@ class HadraVoice:
         self.reference_text = (reference_text or HADRA_REFERENCE_TEXT).strip().rstrip(".") + "."
         self.device = device
         architecture = dict(dim=1024, depth=22, heads=16, ff_mult=2, text_dim=512, conv_layers=4)
-        self.model = load_model(DiT, architecture, weights, vocab_file=vocab, device=device).eval()
+        # F5-TTS picks FP16 when asked to load directly on CUDA. Keep the same
+        # FP32 computation used in the Windows listening preview.
+        self.model = load_model(DiT, architecture, weights, vocab_file=vocab, device="cpu").to(device).eval()
         vocoder_dir = os.getenv("AGRIX_HADRA_VOCODER_DIR")
         self.vocoder = load_vocoder(
             "vocos", is_local=bool(vocoder_dir), local_path=vocoder_dir or "", device=device,

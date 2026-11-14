@@ -1,13 +1,14 @@
 import io
+import os
 import wave
 import unittest
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import numpy as np
 from fastapi.testclient import TestClient
 
-from agrix_voice.app import create_app
+from agrix_voice.app import configured_app, create_app
 from agrix_voice.audio import wav_bytes
 from agrix_voice.benchmark import glossary_extra_terms, metrics
 from agrix_voice.farm import FarmResult
@@ -127,6 +128,23 @@ class VoiceTests(unittest.TestCase):
         with wave.open(io.BytesIO(audio)) as result:
             self.assertEqual(result.getframerate(), 24000)
             self.assertEqual(result.getnframes(), 2400)
+
+    def test_voice_server_loads_models_before_serving(self):
+        with (
+            patch.dict(os.environ, {"AGRIX_MODE": "local", "AGRIX_CHAT_MODEL": "rules",
+                                    "AGRIX_PRELOAD_VOICE": "1", "AGRIX_ASR_FARM_GLOSSARY": "1"}),
+            patch("agrix_voice.app.Recognizer") as recognizer,
+            patch("agrix_voice.app.Synthesizer") as synthesizer,
+            patch("agrix_voice.app.create_app") as app_factory,
+        ):
+            self.assertIs(configured_app(), app_factory.return_value)
+            recognizer.assert_called_once_with(qwen_context=FARM_CONTEXT)
+            asr, synth = recognizer.return_value, synthesizer.return_value
+            asr.load.assert_called_once_with()
+            synth.load.assert_called_once_with()
+            self.assertIs(asr.model, asr.load.return_value)
+            self.assertIs(synth.model, synth.load.return_value)
+            app_factory.assert_called_once_with(asr=asr, synth=synth, chat=None)
 
 
 if __name__ == "__main__":

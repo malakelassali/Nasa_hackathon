@@ -1,5 +1,7 @@
 # Run AgriX ASR on an Intel Xeon and NVIDIA GPU
 
+For the live voice app on your phone or another computer, see [Run AgriX as a private voice server](voice-server.md).
+
 These steps assume one NVIDIA GPU on a Linux x86-64 host with Python 3.11 or 3.12, Git and a working NVIDIA driver. On Windows, use Ubuntu in WSL2 with NVIDIA GPU support and run the Bash commands there. The Intel Xeon handles audio preprocessing, while CUDA runs model inference and training. Allow about 30 GiB of free disk for the environment, model cache and checkpoints. Start training with a GPU with at least 24 GiB VRAM if available. Check the exact GPU and driver using `nvidia-smi`. The default wheel targets CUDA 12.8. [PyTorch CUDA wheel matrix](https://pytorch.org/get-started/previous-versions/#v280)
 
 ## 1. Clone and install

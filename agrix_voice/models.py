@@ -70,7 +70,9 @@ class Recognizer(LazyModel):
         import torch
 
         target = device(torch)
-        dtype = torch.float16 if target == "cuda" else torch.float32
+        dtype = torch.float32
+        if target == "cuda" and os.getenv("AGRIX_ASR_DTYPE") != "float32":
+            dtype = torch.float16
         if self.backend == "qwen" and not self.adapter:
             from qwen_asr import Qwen3ASRModel
 
