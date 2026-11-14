@@ -16,6 +16,16 @@ from .corpus import manifest_rows, normalize_transcript
 from .farm import DevelopmentFarmTools
 from .models import ChatModel, Recognizer, Synthesizer, device
 
+FARM_GLOSSARY = (
+    "القمح", "الشعير", "العدس", "الحمص", "السقي", "هكتار", "قنطار",
+    "blé", "orge", "irrigation", "goutte-à-goutte", "pompe",
+)
+FARM_CONTEXT = (
+    "Transcribe exactly what is spoken in Moroccan Darija and French. "
+    "The recording may contain these agricultural terms: " + "، ".join(FARM_GLOSSARY)
+    + ". Include a term only if the speaker says it."
+)
+
 
 def distance(left, right):
     previous = list(range(len(right) + 1))
@@ -50,6 +60,17 @@ def metrics(rows):
     return result
 
 
+def glossary_extra_terms(rows):
+    """Count unmatched exact glossary terms, once per term and clip."""
+    glossary = {normalize_transcript(term) for term in FARM_GLOSSARY}
+    count = 0
+    for row in rows:
+        reference = f" {normalize_transcript(row['text'])} "
+        hypothesis = f" {normalize_transcript(row['hypothesis'])} "
+        count += sum(f" {term} " in hypothesis and f" {term} " not in reference for term in glossary)
+    return count
+
+
 class PeakMemory:
     def __enter__(self):
         self.process = psutil.Process()
@@ -75,7 +96,14 @@ def asr(args):
     rows = list(manifest_rows(args.input))
     if not rows:
         raise ValueError("Evaluation manifest is empty")
-    recognizer = Recognizer(args.model, args.backend, args.adapter, args.revision, use_env=False)
+    recognizer = Recognizer(
+        args.model, args.backend, args.adapter, args.revision, use_env=False,
+        qwen_language=None if args.qwen_language == "auto" else "Arabic",
+        qwen_context=FARM_CONTEXT if args.farm_glossary else "",
+    )
+    is_qwen = recognizer.backend == "qwen"
+    if not is_qwen and (args.qwen_language == "auto" or args.farm_glossary):
+        raise ValueError("Automatic language detection and the farm glossary require --backend qwen")
     target = device(torch)
     cuda = target == "cuda"
     if cuda:
@@ -99,6 +127,9 @@ def asr(args):
             if field in row:
                 slices[f"{field}={row[field]}"].append(row)
     return {"model": recognizer.model_id, "revision": recognizer.revision, "adapter": recognizer.adapter,
+            "qwen_language": args.qwen_language if is_qwen else None,
+            "context": recognizer.qwen_context if is_qwen else None,
+            "glossary_extra_terms": glossary_extra_terms(predictions) if is_qwen else None,
             "device": target, "gpu": torch.cuda.get_device_name() if cuda else None,
             "load_seconds": load_seconds, "peak_process_rss_mib": memory.peak / 2**20,
             "peak_cuda_allocated_mib": torch.cuda.max_memory_allocated() / 2**20 if cuda else None,
@@ -163,6 +194,8 @@ def main():
     parser.add_argument("--backend")
     parser.add_argument("--adapter")
     parser.add_argument("--revision")
+    parser.add_argument("--qwen-language", choices=("arabic", "auto"), default="arabic")
+    parser.add_argument("--farm-glossary", action="store_true")
     args = parser.parse_args()
     result = {"asr": asr, "tts": tts, "chat": chat}[args.task](args)
     args.output.parent.mkdir(parents=True, exist_ok=True)

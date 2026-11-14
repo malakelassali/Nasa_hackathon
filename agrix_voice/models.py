@@ -44,13 +44,16 @@ class LazyModel:
 
 
 class Recognizer(LazyModel):
-    def __init__(self, model_id=None, backend=None, adapter=None, revision=None, *, use_env=True):
+    def __init__(self, model_id=None, backend=None, adapter=None, revision=None, *, use_env=True,
+                 qwen_language="Arabic", qwen_context=""):
         super().__init__()
         self.model_id = model_id or (os.getenv("AGRIX_ASR_MODEL") if use_env else None) or MOULSOT
         default_backend = "qwen" if self.model_id.casefold() == MOULSOT else "whisper"
         self.backend = backend or (os.getenv("AGRIX_ASR_BACKEND") if use_env else None) or default_backend
         self.adapter = adapter or (os.getenv("AGRIX_ASR_ADAPTER") if use_env else None)
         self.revision = revision or (os.getenv("AGRIX_ASR_REVISION") if use_env else None)
+        self.qwen_language = qwen_language
+        self.qwen_context = qwen_context
 
     def load(self):
         import torch
@@ -82,7 +85,9 @@ class Recognizer(LazyModel):
     def transcribe(self, audio):
         def inference(state):
             if self.backend == "qwen":
-                return state.transcribe(audio=(audio, SAMPLE_RATE), language="Arabic")[0].text
+                return state.transcribe(
+                    audio=(audio, SAMPLE_RATE), language=self.qwen_language, context=self.qwen_context,
+                )[0].text
 
             import torch
 

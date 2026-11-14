@@ -41,6 +41,8 @@ WER can exceed 100% because extra generated words count as insertions. Term reca
 
 The local benchmark artifacts are in `runs/darija-pilot-*.json`. No fine-tuning used the pilot audio. At least one more distinct speaker is needed for the existing speaker-disjoint three-way split.
 
+A follow-up run reported by the GPU workstation user measured 31.2% word error for MoulSot, 126.4% for MaghrebVoice, and 74.0% for Whisper Large V3 Turbo. MoulSot recovered 39 of 54 tagged terms at a median 1.08 seconds per clip. The [GPU runbook](docs/voice-gpu.md#compare-moulsot-decoding-settings) gives the next comparison using forced Arabic and automatic detection, each with and without a fixed farming glossary.
+
 ## Next evaluation
 
 Use verified recordings from different Darija speakers to score the three requested ASR models on the same clips. Report agricultural term recall, digits and units, French code-switching, noise and regional slices alongside overall WER and CER. Collect native-speaker ratings on blinded TTS and conversation samples. Add more speakers before making a disjoint train, validation and test split. Connect authenticated farm data and recommendations when the AgriX application source becomes available.

@@ -1,15 +1,17 @@
 import io
 import wave
 import unittest
+from types import SimpleNamespace
+from unittest.mock import Mock
 
 import numpy as np
 from fastapi.testclient import TestClient
 
 from agrix_voice.app import create_app
 from agrix_voice.audio import wav_bytes
-from agrix_voice.benchmark import metrics
+from agrix_voice.benchmark import FARM_CONTEXT, glossary_extra_terms, metrics
 from agrix_voice.farm import FarmResult
-from agrix_voice.models import normalize_for_speech
+from agrix_voice.models import Recognizer, normalize_for_speech
 
 
 class Transcriber:
@@ -97,6 +99,23 @@ class VoiceTests(unittest.TestCase):
         self.assertEqual(result["normalized_wer"], 0)
         self.assertEqual(result["term_recall"], 1)
         self.assertEqual(normalize_for_speech("٢,٥ha و 300 MAD"), "2,5 هكتار و 300 درهم")
+
+    def test_qwen_language_and_glossary_are_forwarded(self):
+        audio = np.full(8000, 0.1, dtype=np.float32)
+        for language in ("Arabic", None):
+            for context in ("", FARM_CONTEXT):
+                with self.subTest(language=language, glossary=bool(context)):
+                    asr = Recognizer(backend="qwen", qwen_language=language, qwen_context=context)
+                    asr.model = Mock()
+                    asr.model.transcribe.return_value = [SimpleNamespace(text=" القمح ")]
+                    self.assertEqual(asr.transcribe(audio), "القمح")
+                    asr.model.transcribe.assert_called_once_with(
+                        audio=(audio, 16000), language=language, context=context,
+                    )
+        self.assertEqual(glossary_extra_terms([
+            {"text": "القمح", "hypothesis": "القمح الشعير الشعير"},
+            {"text": "goutte-à-goutte", "hypothesis": "goutte à goutte"},
+        ]), 1)
 
 
 if __name__ == "__main__":

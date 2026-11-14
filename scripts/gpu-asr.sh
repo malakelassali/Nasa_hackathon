@@ -7,6 +7,7 @@ usage() {
 Usage:
   bash scripts/gpu-asr.sh setup
   bash scripts/gpu-asr.sh benchmark MANIFEST OUTPUT_DIR
+  bash scripts/gpu-asr.sh tune-moulsot MANIFEST OUTPUT_DIR
   bash scripts/gpu-asr.sh train ANNOTATION_DIR RUN_DIR [CHECKPOINT]
 
 Training expects consented WAV/JSON pairs from at least three speakers.
@@ -27,7 +28,7 @@ if [[ ${1:-} == setup && $# == 1 ]]; then
     "$py" -m pip install 'torch==2.8.0' --index-url "${AGRIX_TORCH_INDEX:-https://download.pytorch.org/whl/cu128}"
     "$py" -m pip install -r requirements-training.txt -r requirements-test.txt
     "$py" -m pip check
-elif [[ ${1:-} == benchmark && $# == 3 ]] || [[ ${1:-} == train && ( $# == 3 || $# == 4 ) ]]; then
+elif [[ ( ${1:-} == benchmark || ${1:-} == tune-moulsot ) && $# == 3 ]] || [[ ${1:-} == train && ( $# == 3 || $# == 4 ) ]]; then
     py=.venv-gpu/bin/python
     if [[ ! -x "$py" ]]; then
         echo "Run bash scripts/gpu-asr.sh setup first." >&2
@@ -64,6 +65,23 @@ case "$1" in
         bench "$2" "$3/maghrebvoice.json" Ayoub-Laachir/MaghrebVoice whisper
         bench "$2" "$3/whisper-turbo.json" openai/whisper-large-v3-turbo whisper
         "$py" -m evaluation.summarize_asr "$3/moulsot.json" "$3/maghrebvoice.json" "$3/whisper-turbo.json"
+        ;;
+    tune-moulsot)
+        test -f "$2"
+        reports=()
+        for language in arabic auto; do
+            for glossary in plain glossary; do
+                report="$3/$language-$glossary.json"
+                options=()
+                if [[ "$glossary" == glossary ]]; then
+                    options+=(--farm-glossary)
+                fi
+                echo "Benchmarking MoulSot: $language, $glossary"
+                bench "$2" "$report" atlasia/moulsot.v0.3 qwen --qwen-language "$language" "${options[@]}"
+                reports+=("$report")
+            done
+        done
+        "$py" -m evaluation.summarize_asr --moulsot-tuning "${reports[@]}"
         ;;
     train)
         corpus="$3/corpus"

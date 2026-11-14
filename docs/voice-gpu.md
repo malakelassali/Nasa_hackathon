@@ -23,6 +23,18 @@ bash scripts/gpu-asr.sh benchmark data/darija-pilot/pilot-arabic-script.jsonl ru
 
 The first run downloads MoulSot v0.3, MaghrebVoice, and Whisper Large V3 Turbo from Hugging Face. Each runs in its own process. The final table reports normalized word and character error rates, exact term recall, warm latency, and peak allocated VRAM. Model choice can improve accuracy. Running the same weights on a GPU mainly improves speed. Save the three JSON files under `runs/gpu-pilot`.
 
+### Compare MoulSot decoding settings
+
+From the existing clone, update the branch and run the comparison on the same clips:
+
+```bash
+cd ~/Nasa_hackathon
+git pull --ff-only origin darija-text-to-speech
+bash scripts/gpu-asr.sh tune-moulsot data/darija-pilot/pilot-arabic-script.jsonl runs/moulsot-tuning
+```
+
+The runner reuses the installed environment and cached model. It compares forced Arabic and automatic language detection, each with and without the same farming glossary. The `arabic-plain` row reruns the original settings. The final table includes word error on clips tagged as code-switched and counts exact glossary terms that appear in a hypothesis but are absent from its reference. Check those differences against the original audio before treating them as insertion errors. Use the pilot to shortlist settings, then validate them on recordings from new speakers. Share the aggregate table. The JSON reports include clip transcripts.
+
 ## 3. Fine-tune after collecting more consented speech
 
 The current 40 clips are enough for the pilot comparison. To train with separate train, validation and test speakers, add at least one more consented speaker. Three speakers only give one speaker per split, so use more speakers and a separate held-out group for a meaningful accuracy claim. Use a consistent Arabic-script Darija reference for Darija words and preserve French words. Place consented per-clip WAV/JSON pairs in `data/incoming`. Follow the [recording guide](../evaluation/RECORDING_GUIDE.md) for additional clips. Preserve the current pilot as a separate evaluation set if you can collect an independent training corpus.
