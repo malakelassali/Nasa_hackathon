@@ -1,3 +1,4 @@
+import hashlib
 import importlib
 import os
 import re
@@ -6,6 +7,7 @@ import threading
 from pathlib import Path
 
 from .audio import SAMPLE_RATE, wav_bytes
+from .hadra import HADRA_MODEL
 
 MOULSOT = "atlasia/moulsot.v0.3"
 KANDIR = "KandirResearch/DarijaTTS-v0.1-500M"
@@ -177,6 +179,11 @@ LATIN_REPLIES = {
 }
 
 
+def hadra_reply_file(directory, text):
+    digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    return Path(directory) / f"{digest}.wav"
+
+
 class Synthesizer(LazyModel):
     def __init__(self, backend=None, model_id=None):
         super().__init__()
@@ -185,9 +192,16 @@ class Synthesizer(LazyModel):
             "kandir": KANDIR,
             "neutts": "Tilas/neutts-air-darija-v1",
             "speecht5": "HAMMALE/speecht5-darija",
+            "hadra": HADRA_MODEL,
         }.get(self.backend)
 
     def load(self):
+        if self.backend == "hadra":
+            import torch
+
+            from .hadra import HadraVoice
+
+            return HadraVoice(self.model_id, device(torch))
         if self.backend == "kandir":
             import outetts
             from huggingface_hub import hf_hub_download
@@ -230,6 +244,13 @@ class Synthesizer(LazyModel):
         raise ValueError("Unknown synthesis backend")
 
     def speak(self, text):
+        if self.backend == "hadra" and text in LATIN_REPLIES:
+            reply_dir = os.getenv("AGRIX_HADRA_REPLY_DIR")
+            if reply_dir:
+                try:
+                    return hadra_reply_file(reply_dir, text).read_bytes()
+                except FileNotFoundError:
+                    pass
         if self.backend == "speecht5":
             text = LATIN_REPLIES.get(text, text)
             if not text.strip() or re.search(r"[\u0600-\u06ff]", text):
@@ -264,6 +285,8 @@ class Synthesizer(LazyModel):
                 model, ref_codes, ref_text = state
                 waveform = model.infer(text, ref_codes=ref_codes, ref_text=ref_text)
                 rate = 24_000
+            elif self.backend == "hadra":
+                waveform, rate = state.synthesize(text)
             else:
                 import torch
 

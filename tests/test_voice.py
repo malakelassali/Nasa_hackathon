@@ -11,7 +11,7 @@ from agrix_voice.app import create_app
 from agrix_voice.audio import wav_bytes
 from agrix_voice.benchmark import glossary_extra_terms, metrics
 from agrix_voice.farm import FarmResult
-from agrix_voice.models import FARM_CONTEXT, Recognizer, normalize_for_speech
+from agrix_voice.models import FARM_CONTEXT, Recognizer, Synthesizer, normalize_for_speech
 
 
 class Transcriber:
@@ -116,6 +116,17 @@ class VoiceTests(unittest.TestCase):
             {"text": "القمح", "hypothesis": "القمح الشعير الشعير"},
             {"text": "goutte-à-goutte", "hypothesis": "goutte à goutte"},
         ]), 1)
+
+    def test_hadra_speaks_arabic_script_and_returns_wav(self):
+        text = "واخا، واش عندك السقي؟"
+        synth = Synthesizer("hadra")
+        synth.model = Mock()
+        synth.model.synthesize.return_value = (np.full(2400, 0.1, dtype=np.float32), 24000)
+        audio = synth.speak(text)
+        synth.model.synthesize.assert_called_once_with(text)
+        with wave.open(io.BytesIO(audio)) as result:
+            self.assertEqual(result.getframerate(), 24000)
+            self.assertEqual(result.getnframes(), 2400)
 
 
 if __name__ == "__main__":

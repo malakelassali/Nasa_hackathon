@@ -13,6 +13,7 @@ let stopRecording;
 let busy = false;
 let session;
 let speechEnabled = false;
+let speechTimeout = 130000;
 let micEnabled = false;
 let objectUrl;
 let confirmationButtons = [];
@@ -23,10 +24,10 @@ function updateControls() {
   confirmationButtons.forEach(button => { button.disabled = busy; });
 }
 
-async function request(path, body) {
+async function request(path, body, timeout = 130000) {
   const response = await fetch(path, {
     method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body), signal: AbortSignal.timeout(130000),
+    body: JSON.stringify(body), signal: AbortSignal.timeout(timeout),
   });
   if (!response.ok) throw new Error(response.status);
   return response;
@@ -57,7 +58,7 @@ async function speak(text) {
   }
   status.textContent = "كنوجّد الصوت…";
   try {
-    const response = await request("/api/speech", { text });
+    const response = await request("/api/speech", { text }, speechTimeout);
     objectUrl = URL.createObjectURL(await response.blob());
     audio.src = objectUrl;
     audio.hidden = stopSpeech.hidden = false;
@@ -200,6 +201,7 @@ try {
   const settings = await response.json();
   byId("demo").hidden = !settings.development_data;
   speechEnabled = settings.audio_reply;
+  speechTimeout = settings.speech_timeout_ms ?? speechTimeout;
   micEnabled = Boolean(settings.speech && navigator.mediaDevices?.getUserMedia && window.AudioWorkletNode);
   if (!micEnabled) status.textContent = "تقدر تكتب سؤالك هنا.";
 } catch {

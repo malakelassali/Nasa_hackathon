@@ -40,11 +40,12 @@ def create_app(*, tools=None, asr=None, synth=None, chat=None):
     demo = tools is None
     assistant = Assistant(tools if tools is not None else DevelopmentFarmTools(), chat)
     timeout = float(os.getenv("AGRIX_INFERENCE_TIMEOUT", "120"))
+    speech_timeout = float(os.getenv("AGRIX_SPEECH_TIMEOUT", str(timeout)))
     # Keep timed-out work counted until the worker really finishes.
     slots = asyncio.Semaphore(2)
     tasks = set()
 
-    async def run(operation, *args):
+    async def run(operation, *args, deadline=timeout):
         if slots.locked():
             raise HTTPException(503, "Voice service is busy")
         await slots.acquire()
@@ -59,7 +60,7 @@ def create_app(*, tools=None, asr=None, synth=None, chat=None):
 
         task.add_done_callback(finished)
         try:
-            return await asyncio.wait_for(asyncio.shield(task), timeout)
+            return await asyncio.wait_for(asyncio.shield(task), deadline)
         except TimeoutError as exc:
             raise HTTPException(504, "The request took too long") from exc
         except InvalidAudio as exc:
@@ -88,7 +89,8 @@ def create_app(*, tools=None, asr=None, synth=None, chat=None):
     @app.get("/api/status")
     async def status():
         return {"development_data": demo, "speech": asr is not None, "audio_reply": synth is not None,
-                "synthesis_backend": getattr(synth, "backend", None)}
+                "synthesis_backend": getattr(synth, "backend", None),
+                "speech_timeout_ms": int(speech_timeout * 1000) + 10000}
 
     @app.post("/api/transcribe")
     async def transcribe(request: Request):
@@ -123,7 +125,7 @@ def create_app(*, tools=None, asr=None, synth=None, chat=None):
     async def speech(body: Speech):
         if synth is None:
             raise HTTPException(503, "Speech synthesis is disabled")
-        return Response(await run(synth.speak, body.text), media_type="audio/wav")
+        return Response(await run(synth.speak, body.text, deadline=speech_timeout), media_type="audio/wav")
 
     app.mount("/", StaticFiles(directory=WEB, html=True), name="web")
     return app

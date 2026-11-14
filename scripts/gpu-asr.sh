@@ -90,9 +90,12 @@ case "$1" in
         export AGRIX_MODE=local AGRIX_CHAT_MODEL=rules
         export AGRIX_ASR_BACKEND=qwen AGRIX_ASR_MODEL=atlasia/moulsot.v0.3 AGRIX_ASR_FARM_GLOSSARY=1
         unset AGRIX_ASR_ADAPTER
-        export AGRIX_TTS_BACKEND=speecht5
+        export AGRIX_TTS_BACKEND="${AGRIX_TTS_BACKEND:-speecht5}"
         export AGRIX_SPEECHT5_EMBEDDING="${AGRIX_SPEECHT5_EMBEDDING:-data/voice/public-demo-female.npy}"
-        if [[ ! -f "$AGRIX_SPEECHT5_EMBEDDING" ]]; then
+        if [[ "$AGRIX_TTS_BACKEND" == hadra ]]; then
+            export WANDB_MODE=disabled
+            "$py" -c 'import f5_tts.infer.utils_infer'
+        elif [[ "$AGRIX_TTS_BACKEND" == speecht5 && ! -f "$AGRIX_SPEECHT5_EMBEDDING" ]]; then
             "$py" - <<'PY'
 import hashlib
 import os
