@@ -10,7 +10,13 @@ AgriX is organized as a single-repository workspace for developing its web UI an
 - `infrastructure/` — deployment and hosting configuration when a hosting target is selected.
 - `References/` — project reference material.
 
-The workspace is intentionally framework-neutral at this stage. No application behavior or runtime has been added.
+The web workspace is framework-neutral. The Darija voice prototype has its own local Python runtime.
+
+## Darija voice assistant
+
+- [GPU setup, benchmarking, and fine-tuning](docs/voice-gpu.md)
+- [Local voice assistant setup](VOICE_AI_README.md)
+- [Voice AI evaluation report](VOICE_AI_REPORT.md)
 
 ## Getting started
 

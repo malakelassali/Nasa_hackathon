@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgriX | Darija recording studio</title>
+  <link href="/style.css" rel="stylesheet">
+  <script type="module" src="/collect.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <header><div class="brand">AgriX</div><a href="/">Voice assistant</a></header>
+    <section class="panel">
+      <div class="intro">
+        <h1>Darija recording studio</h1>
+        <p>Record one speaker at a time. Use a pseudonymous speaker code and keep signed or recorded consent separately.</p>
+      </div>
+      <div class="controls">
+        <button type="button" id="record">Record clip</button>
+        <meter id="level" aria-label="Recording level" min="0" max="1" value="0" hidden></meter>
+        <p id="status" role="status"></p>
+        <audio controls id="preview" hidden></audio>
+        <form id="annotation" class="fields">
+          <label>Speaker code <input id="speaker" required maxlength="40" pattern="[A-Za-z0-9_-]+"></label>
+          <label>Dialect or region (optional) <input id="region" maxlength="80"></label>
+          <label>Environment
+            <select id="environment"><option>indoors</option><option>outdoors</option></select>
+          </label>
+          <label>Verified transcription <textarea id="transcript" dir="auto" rows="3" required maxlength="800"></textarea></label>
+          <label>Agricultural terms, numbers or names (one per line)
+            <textarea id="terms" dir="auto" rows="2" maxlength="500"></textarea>
+          </label>
+          <label class="check"><input id="mixed" type="checkbox"> French/Darija code-switching</label>
+          <label class="check"><input id="noisy" type="checkbox"> Noticeable background noise</label>
+          <label class="check"><input id="consent" type="checkbox" required>
+            The speaker consented to local recording, evaluation and training. I checked that the clip and transcript exclude personal details.
+          </label>
+          <div class="buttons"><button type="button" id="draft" class="secondary" disabled>Generate draft transcript locally</button>
+          <button id="export" disabled>Export validated clip</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

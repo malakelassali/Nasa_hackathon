@@ -1,0 +1,2 @@
+-r requirements-models.txt
+peft>=0.18,<0.22

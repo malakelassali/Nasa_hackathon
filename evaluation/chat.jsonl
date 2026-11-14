@@ -1,0 +1,4 @@
+{"id":"rotation_rainfed","turns":["العام اللي فات زرعت القمح، ودابا بغيت نبدل شوية.","غير الشتا، والما قليل هاد العام."],"expected":{"previous_crop":"القمح","irrigation":"rainfed"}}
+{"id":"correction","turns":["عندي جوج هكتارات وزرعت القمح وعندي السقي. آش نزرع؟","سمح ليا، غير واحد هكتار، en fait بلا سقي."],"expected":{"area_ha":1,"previous_crop":"القمح","irrigation":"rainfed"}}
+{"id":"code_switch","turns":["عندي 2,5 hectares، العام اللي فات زرعت le blé، دابا عندي peu d'eau. آش نزرع؟"],"expected":{"area_ha":2.5,"previous_crop":"القمح","irrigation":"limited"}}
+{"id":"missing_climate","turns":["عندكم météo ديال الخميسات؟"],"expected":{"location":"الخميسات"}}

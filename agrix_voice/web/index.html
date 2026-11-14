@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ary-MA" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f6ed">
+  <title>AgriX | المساعد الفلاحي</title>
+  <link href="/style.css" rel="stylesheet">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div class="brand" dir="ltr">AgriX</div>
+      <nav aria-label="التنقل"><a href="/collect.html">تسجيل عيّنات</a></nav>
+    </header>
+    <section class="panel" aria-labelledby="title">
+      <div class="intro">
+        <p id="demo" class="tag" hidden>نسخة تجريبية</p>
+        <h1 id="title">المساعد الفلاحي</h1>
+        <p>هضر بالدارجة على الأرض ديالك والزرع ديال الموسم الجاي.</p>
+      </div>
+      <div id="messages" role="log" aria-label="المحادثة"></div>
+      <div class="controls">
+        <button id="mic" class="mic" type="button" aria-pressed="false" aria-label="بدا التسجيل">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5.5 10v1a6.5 6.5 0 0 0 13 0v-1M12 18v4m-4 0h8"/></svg>
+        </button>
+        <meter id="level" aria-label="قوة الصوت" min="0" max="1" value="0" hidden></meter>
+        <p id="status" role="status">ضغط على الميكرو وبدا هضر.</p>
+        <audio id="speech" controls hidden></audio>
+        <button id="stop-speech" type="button" class="secondary" hidden>وقف الصوت</button>
+        <form id="chat">
+          <label for="input">كتب سؤالك ولا صحّح الكلام اللي تسجّل</label>
+          <div class="entry">
+            <textarea id="input" rows="2" maxlength="800" required placeholder="مثلاً: العام اللي فات زرعت القمح…"></textarea>
+            <button type="submit">صيفط</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
