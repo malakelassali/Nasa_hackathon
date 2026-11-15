@@ -38,6 +38,17 @@ AGRIX_ASR_DTYPE=float16 bash scripts/gpu-asr.sh voice-server
 
 This selects the FP16 MoulSot mode used in the earlier GPU benchmark, where MoulSot alone peaked at about 4 GiB of allocated VRAM. HADRA still runs in FP32 with the same F1 voice and 16 synthesis steps. Test the combined server on the card, since the display and other running programs also use GPU memory. [RTX 5060 specifications](https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5060-family/) · [PyTorch CUDA 12.8 wheels](https://pytorch.org/get-started/previous-versions/#v280)
 
+### Use an existing Python environment
+
+If CUDA and HADRA already work in another virtual environment or Conda environment, activate it and run these commands from the repository:
+
+```bash
+export AGRIX_GPU_PYTHON="$(python -c 'import sys; print(sys.executable)')"
+AGRIX_ASR_DTYPE=float16 bash scripts/gpu-asr.sh voice-server
+```
+
+The launcher uses that interpreter for the CUDA check, reply rendering, and server. The same variable selects the interpreter for `setup-voice` if HADRA is missing. Leave it unset to use `.venv-gpu`.
+
 ## 2. Give your phone and computer a private HTTPS address
 
 Install Tailscale on the RTX workstation and the devices that will use the app. On native Linux, open a second terminal on the RTX workstation while AgriX is running. [Install Tailscale on Linux](https://tailscale.com/docs/install/linux)

@@ -15,6 +15,8 @@ Usage:
 
 Training expects consented WAV/JSON pairs from at least three speakers.
 Reuse RUN_DIR only when resuming from its checkpoint.
+Set AGRIX_GPU_PYTHON to the Python executable in an existing GPU environment.
+The setup command creates .venv-gpu.
 EOF
 }
 
@@ -50,9 +52,10 @@ if [[ ${1:-} == setup && $# == 1 ]]; then
 elif [[ ( ${1:-} == benchmark || ${1:-} == tune-moulsot ) && $# == 3 ]] \
     || [[ ${1:-} == train && ( $# == 3 || $# == 4 ) ]] \
     || [[ ( ${1:-} == setup-voice || ${1:-} == voice-demo || ${1:-} == voice-server ) && $# == 1 ]]; then
-    py=.venv-gpu/bin/python
-    if [[ ! -x "$py" ]]; then
-        echo "Run bash scripts/gpu-asr.sh setup first." >&2
+    py="${AGRIX_GPU_PYTHON:-.venv-gpu/bin/python}"
+    if ! command -v "$py" >/dev/null; then
+        echo "Python executable not found: $py" >&2
+        echo "Run bash scripts/gpu-asr.sh setup or set AGRIX_GPU_PYTHON to an existing environment's Python." >&2
         exit 1
     fi
 else
@@ -78,8 +81,8 @@ bench() {
 
 check_hadra() {
     if ! "$py" -c 'import torchaudio; from f5_tts.infer.utils_infer import load_model'; then
-        echo "HADRA dependencies could not be loaded from .venv-gpu." >&2
-        echo "Run bash scripts/gpu-asr.sh setup-voice and check its output." >&2
+        echo "HADRA dependencies could not be loaded with $py." >&2
+        echo "Run bash scripts/gpu-asr.sh setup-voice with the same Python and check its output." >&2
         return 1
     fi
 }
