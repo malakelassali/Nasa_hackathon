@@ -7,6 +7,7 @@ import type { Locale, SceneId } from "./demo/types";
 import { SceneView } from "./components/SceneView";
 import { LocationDialog } from "./features/map/LocationDialog";
 import { VoiceDialog } from "./features/chat/VoiceDialog";
+import { AssistantAccess } from "./features/chat/AssistantAccess";
 
 const plotScenes = [
   "map",
@@ -44,8 +45,13 @@ function Workspace() {
             "Votre argent couvre cet exemple",
             "الفلوس ديالك كافية لهاد المثال",
           )
-      : state.scene === 'ready'
-        ? words(state.locale, 'Review a sample check result', 'Consulter un résultat d’exemple', 'نراجع نتيجة كمثال')
+      : state.scene === "ready"
+        ? words(
+            state.locale,
+            "Review a sample check result",
+            "Consulter un résultat d’exemple",
+            "نراجع نتيجة كمثال",
+          )
         : scene.title;
   const navigate = (id: SceneId) => dispatch({ type: "navigate", scene: id });
   const active = plotScenes.includes(state.scene)
@@ -183,16 +189,9 @@ function Workspace() {
               <option value="fr">Français</option>
               <option value="ar">الدارجة</option>
             </Select>
-            <Button
-              className="header-chat"
-              size="small"
-              onClick={() => navigate("chat")}
-            >
-              <Icon name="chat" />
-              {flow.ui.help}
-            </Button>
           </div>
         </header>
+        <AssistantAccess />
         <main id="main-content" className={`main-content scene-${state.scene}`}>
           <div className="page-heading">
             <div className="heading-topline">
@@ -221,8 +220,13 @@ function Workspace() {
                     "Utilisez votre position, une adresse ou choisissez sur la carte.",
                     "استعمل البلاصة ديالك، دخل عنوان ولا اختار فالخريطة.",
                   )
-                : state.scene === 'ready'
-                  ? words(state.locale, 'Your draft is kept. This result is a preset for reviewing the UI.', 'Votre brouillon est conservé. Ce résultat prédéfini sert à tester l’interface.', 'المسودة باقية. هاد النتيجة مختارة باش نجربو الواجهة.')
+                : state.scene === "ready"
+                  ? words(
+                      state.locale,
+                      "Your draft is kept. This result is a preset for reviewing the UI.",
+                      "Votre brouillon est conservé. Ce résultat prédéfini sert à tester l’interface.",
+                      "المسودة باقية. هاد النتيجة مختارة باش نجربو الواجهة.",
+                    )
                   : scene.subtitle}
             </p>
           </div>

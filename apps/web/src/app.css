@@ -153,8 +153,144 @@ h2 {
   background: var(--color-paper);
   border-color: transparent;
 }
-.header-chat {
-  white-space: nowrap;
+.assistant-access {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  padding: 12px 40px;
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+}
+.assistant-access__button {
+  width: 100%;
+  min-height: 80px;
+  justify-content: flex-start;
+  gap: 18px;
+  padding: 14px 22px;
+  border-radius: 16px;
+  text-align: start;
+  box-shadow: 0 3px 12px rgb(24 42 35 / 10%);
+}
+.assistant-access__symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 14%);
+}
+.assistant-access__copy,
+.voice-question__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+}
+.assistant-access__copy strong {
+  font-size: 21px;
+  line-height: 1.35;
+}
+.assistant-access__copy > span {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.voice-question {
+  width: 100%;
+  min-height: 132px;
+  padding: 24px;
+  gap: 22px;
+  justify-content: flex-start;
+  text-align: start;
+  border-radius: 20px;
+  box-shadow: 0 5px 18px rgb(24 42 35 / 12%);
+  scroll-margin-block: 140px;
+}
+.voice-question__symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 15%);
+}
+.voice-question__symbol .agrix-icon {
+  width: 44px;
+  height: 44px;
+}
+.voice-question__copy strong {
+  font-size: 24px;
+  line-height: 1.35;
+}
+.voice-question__copy > span {
+  font-size: 16px;
+  line-height: 1.55;
+  font-weight: 400;
+}
+.voice-dialog .dialog-stack > .agrix-button {
+  min-height: 64px;
+  font-size: 17px;
+}
+.voice-dialog .dialog-stack > .agrix-button--primary {
+  min-height: 76px;
+  font-size: 19px;
+}
+.voice-dialog .permission-symbol {
+  width: 96px;
+  height: 96px;
+}
+.voice-dialog .permission-symbol .agrix-icon {
+  width: 48px;
+  height: 48px;
+}
+.assistant-panel {
+  width: min(calc(100% - 32px), 820px);
+  max-height: 94dvh;
+}
+.assistant-panel .agrix-modal__surface {
+  padding: 0;
+  gap: 0;
+}
+.assistant-panel .agrix-modal__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 22px 28px 14px;
+  margin: 0;
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+}
+.assistant-panel .agrix-modal__description {
+  padding: 16px 28px 0;
+}
+.assistant-panel .agrix-modal__body {
+  padding: 20px 28px;
+}
+.assistant-panel .chat-layout {
+  display: block;
+}
+.assistant-panel .chat-layout > .task-aside {
+  display: none;
+}
+.assistant-panel .agrix-modal__footer {
+  position: sticky;
+  bottom: 0;
+  padding: 14px 28px;
+  background: var(--color-white);
+  border-top: 1px solid var(--color-border);
+}
+.assistant-panel .agrix-modal__footer > .agrix-button {
+  width: 100%;
+}
+.assistant-preview-note {
+  margin: 16px 0 0;
+  color: var(--color-muted);
+  font-size: 13px;
 }
 .mobile-brand,
 .mobile-nav {
@@ -167,6 +303,7 @@ h2 {
   max-width: 1520px;
   margin-inline: auto;
   padding: 28px 40px 40px;
+  scroll-margin-block-start: 140px;
 }
 .page-heading {
   margin-block-end: 25px;
@@ -1096,7 +1233,7 @@ progress::-webkit-progress-value {
 .composer-actions {
   display: flex;
   gap: 12px;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 .composer-actions .agrix-button {
   font-size: 13px;
@@ -1245,6 +1382,9 @@ progress::-webkit-progress-value {
   .app-header {
     padding-inline: 28px;
   }
+  .assistant-access {
+    padding-inline: 28px;
+  }
   .header-context {
     font-size: 12px;
     gap: 9px;
@@ -1369,9 +1509,64 @@ progress::-webkit-progress-value {
     font-weight: 650;
     letter-spacing: -0.04em;
   }
-  .header-context,
-  .header-chat {
+  .header-context {
     display: none;
+  }
+  .assistant-access {
+    padding: 10px 20px;
+  }
+  .assistant-access__button {
+    min-height: 80px;
+    padding: 12px 16px;
+    gap: 12px;
+  }
+  .assistant-access__symbol {
+    width: 40px;
+    height: 40px;
+  }
+  .assistant-access__copy strong {
+    font-size: 20px;
+  }
+  .assistant-access__copy > span {
+    font-size: 14px;
+  }
+  .assistant-access__button > .agrix-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .voice-question {
+    min-height: 144px;
+    padding: 22px 18px;
+    gap: 16px;
+  }
+  .voice-question__symbol {
+    width: 64px;
+    height: 64px;
+  }
+  .voice-question__symbol .agrix-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .voice-question__copy strong {
+    font-size: 23px;
+  }
+  .voice-question__copy > span {
+    font-size: 16px;
+  }
+  .assistant-panel {
+    width: calc(100% - 16px);
+  }
+  .assistant-panel .agrix-modal__header {
+    padding: 18px 20px 14px;
+  }
+  .assistant-panel .agrix-modal__description {
+    padding-inline: 20px;
+  }
+  .assistant-panel .agrix-modal__body {
+    padding: 18px 16px;
+  }
+  .assistant-panel .agrix-modal__footer {
+    padding: 12px 16px max(12px, env(safe-area-inset-bottom));
   }
   .header-actions .agrix-select {
     max-width: 120px;
@@ -1776,6 +1971,21 @@ progress::-webkit-progress-value {
   }
   .app-header {
     padding-inline: 14px;
+  }
+  .assistant-access {
+    padding-inline: 14px;
+  }
+  .assistant-access__button {
+    gap: 10px;
+    padding-inline: 12px;
+  }
+  .assistant-access__button > .agrix-icon {
+    display: none;
+  }
+  .voice-question {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
   .sample-label {
     max-width: 150px;

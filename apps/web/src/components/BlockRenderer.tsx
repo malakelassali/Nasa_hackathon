@@ -8,9 +8,11 @@ import { MapPanel } from "../features/map/MapPanel";
 export function ActionRow({
   label,
   target,
+  onNavigate,
 }: {
   label: string;
   target: string;
+  onNavigate?: () => void;
 }) {
   const { dispatch } = useDemo();
   return (
@@ -18,7 +20,10 @@ export function ActionRow({
       type="button"
       className="action-row"
       onClick={() => {
-        if (isSceneId(target)) dispatch({ type: "navigate", scene: target });
+        if (isSceneId(target)) {
+          dispatch({ type: "navigate", scene: target });
+          onNavigate?.();
+        }
       }}
     >
       <span>{label}</span>

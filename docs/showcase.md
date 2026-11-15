@@ -12,8 +12,8 @@ The product specification in `References/AgriX_Product_Spec.md` defines the futu
 | Plan detail | Timeline, cash, returns, market history state, services, machinery, labor and pros/cons | Dated cash-flow engine, verified quotes, yields and observed market history |
 | Try a change | Budget changes the displayed sample funding gap; scenario changes select fixed examples | Recalculate all dependent figures with an auditable model |
 | Custom rotation | Add, reorder and remove supported crops/fallow, then inspect preset feasibility states; the detailed report is explicitly the fixed Wheat → Chickpea sample | Calendar/crop sequence rules, feasibility assessment and reports for each custom plan |
-| Ask AgriX | Contextual prompts, typed messages and fixed explanatory replies | Server-side AI service grounded in the current plan, with authorization and output validation |
-| Voice | Simulated permission, recording timer, stop, transcript review, playback state and send | Real capture, transcription, playback, retention and explicit consent |
+| Ask AgriX | Large sticky help bar on every desktop/phone screen; opens chat over the current page with contextual prompts, typed messages and fixed replies | Server-side AI service grounded in the current plan, with authorization and output validation |
+| Voice | Large microphone action above the conversation, with explicit text and larger recording controls; simulated permission, timer, stop, transcript review, playback state and send | Real capture, transcription, playback, retention and explicit consent |
 | Save and reopen | Session-only saved selection and checklist | Private authenticated persistence and deletion controls |
 | Languages | English, French, Arabic-script Darija; RTL preserves map orientation and draft state | Moroccan-speaker review and production localization QA |
 

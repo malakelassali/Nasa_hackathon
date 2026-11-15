@@ -25,6 +25,7 @@ export function VoiceDialog() {
   }, [state.voiceStage, state.voiceElapsed, dispatch]);
   return (
     <Modal
+      className="voice-dialog"
       open={state.voiceStage !== null}
       onClose={close}
       closeLabel={text.close}
@@ -71,7 +72,13 @@ export function VoiceDialog() {
                 })
               }
             >
-              {text.allow}
+              <Icon name="mic" size="large" />
+              {words(
+                state.locale,
+                "Start recording · preview",
+                "Commencer l’enregistrement · aperçu",
+                "نبدا نسجل · تجربة",
+              )}
             </Button>
             <Button
               variant="secondary"

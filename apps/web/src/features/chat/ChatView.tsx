@@ -35,7 +35,13 @@ function SampleAnswer() {
   );
 }
 
-export function ChatView({ scene }: { scene: Scene }) {
+export function ChatView({
+  scene,
+  onNavigate,
+}: {
+  scene: Scene;
+  onNavigate?: () => void;
+}) {
   const { state, dispatch, flow } = useDemo();
   const text = labels[state.locale];
   const sender = flow.ui.you ?? words(state.locale, "You", "Vous", "نتا");
@@ -43,6 +49,36 @@ export function ChatView({ scene }: { scene: Scene }) {
   return (
     <div className="task-layout chat-layout">
       <section className="task-main">
+        <Button
+          id="chat-voice-action"
+          className="voice-question"
+          onClick={() =>
+            dispatch({ type: "patch", patch: { voiceStage: "permission" } })
+          }
+          aria-haspopup="dialog"
+        >
+          <span className="voice-question__symbol">
+            <Icon name="mic" size="large" />
+          </span>
+          <span className="voice-question__copy">
+            <strong>
+              {words(
+                state.locale,
+                "Ask with your voice",
+                "Posez votre question à voix haute",
+                "سول بصوتك",
+              )}
+            </strong>
+            <span>
+              {words(
+                state.locale,
+                "Tap here to speak. Review your question before sending.",
+                "Appuyez ici pour parler. Vérifiez votre question avant de l’envoyer.",
+                "ضغط هنا وهضر. راجع السؤال ديالك قبل ما تصيفطو.",
+              )}
+            </span>
+          </span>
+        </Button>
         <div className="chat-context">
           <Badge tone="success">{flow.ui.context}</Badge>
           <span>
@@ -134,6 +170,7 @@ export function ChatView({ scene }: { scene: Scene }) {
                     "نشوف تفصيل الفلوس",
                   )}
                   target="cash"
+                  onNavigate={onNavigate}
                 />
               </Card>
             </div>
@@ -191,7 +228,12 @@ export function ChatView({ scene }: { scene: Scene }) {
           }}
         >
           <Input
-            label={scene.blocks.find((block) => block.type === "input")?.label}
+            label={words(
+              state.locale,
+              "Or write your question",
+              "Ou écrivez votre question",
+              "ولا كتب السؤال ديالك",
+            )}
             value={state.chatDraft}
             onChange={(event) =>
               dispatch({
@@ -209,16 +251,6 @@ export function ChatView({ scene }: { scene: Scene }) {
             )}
           />
           <div className="composer-actions">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() =>
-                dispatch({ type: "patch", patch: { voiceStage: "permission" } })
-              }
-            >
-              <Icon name="mic" />
-              <span>{text.record}</span>
-            </Button>
             <Button type="submit" disabled={!state.chatDraft.trim()}>
               {text.send}
               <Icon name="arrowRight" />
@@ -247,6 +279,7 @@ export function ChatView({ scene }: { scene: Scene }) {
             "نشوف تفصيل الفلوس · 12,000 درهم",
           )}
           target="cash"
+          onNavigate={onNavigate}
         />
         <MapPanel compact />
         <Card className="key-finding agrix-card--sage">
@@ -261,7 +294,12 @@ export function ChatView({ scene }: { scene: Scene }) {
           </strong>
           <p>{flow.ui.demo}</p>
         </Card>
-        <Button onClick={() => dispatch({ type: "navigate", scene: "edit" })}>
+        <Button
+          onClick={() => {
+            dispatch({ type: "navigate", scene: "edit" });
+            onNavigate?.();
+          }}
+        >
           {scene.primary.label}
           <Icon name="arrowRight" />
         </Button>
