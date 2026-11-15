@@ -1,31 +1,25 @@
-# Repository architecture
+# Architecture
 
-This repository keeps the web app and its future hosting setup together while leaving room for shared code if the project needs it.
+## Current decision
+
+Use a small npm workspace with React, TypeScript and Vite. This phase is a static UI showcase; it has no backend, router service, external data client, AI integration or persistent storage. Framework and dependencies are pinned in the lockfile. Node 24 is the recommended runtime.
 
 ## Boundaries
 
-### `apps/web/`
+`apps/web/src` owns the shell and product-specific views. `demo/` owns typed fixtures, locale copy, context and the reducer for the synthetic session. `features/` groups map/location, report/builder and chat/voice presentation. Navigation is in memory and intentionally resets on refresh. Page state remains independent of language so switching to Darija preserves the plot and draft while changing layout direction.
 
-Owns the browser application. Once a framework is chosen, keep routes or pages, feature-specific code, shared app components, assets, styles, and browser utilities under this directory. Avoid putting product features at the repository root.
+`packages/ui` owns reusable visual primitives and design tokens. It has no product rules, fetches or persistence. It exports source to the workspace build rather than introducing a second packaging pipeline. CSS classes support a strict production policy without inline style attributes. Shared primitives are reused by multiple showcase views.
 
-### `packages/ui/`
+`References` remains the product and design source. `docs/showcase.md` records the distinction between a rendered product flow and future functional behavior. Map imagery and icons are local static files in `apps/web/public/assets` with provenance documented there.
 
-Reserved for UI components, tokens, and utilities that are intentionally shared. Start with app-local components; extract them here only when a real second consumer exists.
+`infrastructure/security/headers.mjs` is the canonical response policy. Vite uses a development variant for refresh and the strict policy for production preview. The build emits host-compatible `_headers` and a meta CSP fallback. CI checks policy consistency alongside source boundaries, types, reducer tests and the production bundle.
 
-### `docs/`
+## Future application work
 
-Stores design and implementation decisions, setup instructions, and operational notes.
+Keep the UI primitives and page layouts. Replace the demo state boundary deliberately with typed application services when real features are authorized; do not let fixtures become a silent production data source. Keep provider secrets, authorization, validation and AI tool execution on a trusted server. A future server may live under `apps/api` after requirements and hosting are selected; no empty service or unused infrastructure is created now.
 
-### `infrastructure/`
+Separate device permission and upload handling from UI presentation. Revisit the threat model and CSP before connecting a map, audio service, AI model or data source. Preserve the specification's distinction between estimated, measured, supplied and unknown information.
 
-Reserved for hosting and deployment configuration. Add platform-specific files after the hosting target and build process are selected.
+## Verification
 
-## Suggested web source areas
-
-The `apps/web/src/` directory can be organized into `assets/`, `components/`, `features/`, `layouts/`, `lib/`, `pages/`, and `styles/` as the chosen framework and app needs require. This is a guide, not a requirement to create empty directories or adopt a particular framework.
-
-## Decisions to make before implementation
-
-- Select the web framework and package manager.
-- Define local development and production build commands.
-- Select the hosting platform and document its required build and environment settings.
+`npm run check` is the root gate: source security boundaries, strict TypeScript, meaningful state-transition tests, production build and built-policy validation. Browser review covers desktop, narrow layouts, RTL, dialogs and the main journey. `npm audit --audit-level=high` checks current dependency advisories; it does not establish that the application is secure.

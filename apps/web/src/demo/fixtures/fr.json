@@ -1,0 +1,1196 @@
+{
+  "locale": "fr",
+  "language": "Français",
+  "rtl": false,
+  "ui": {
+    "brand": "AgriX",
+    "language": "FR · EN · الدارجة",
+    "back": "Retour",
+    "help": "Demander à AgriX",
+    "map": "Ma parcelle",
+    "plans": "Plans",
+    "saved": "Enregistrés",
+    "example": "Pilote illustratif à Settat · chiffres d'exemple",
+    "step": "Étape",
+    "source": "Carte : Esri World Imagery · limite illustrative",
+    "north": "N",
+    "zoom": "Zoom",
+    "location": "Ma position",
+    "draw": "Placer les points de la limite",
+    "undo": "Annuler",
+    "redraw": "Redessiner",
+    "area": "Surface estimée · 2,0 ha",
+    "privacy": "Votre parcelle reste privée",
+    "edit": "Modifier",
+    "details": "Voir les détails",
+    "demo": "Chiffres d'exemple · à vérifier localement",
+    "date": "14 nov. 2026",
+    "unit": "Parcelle entière · 2,0 ha",
+    "context": "Settat · 2,0 ha · culture pluviale",
+    "you": "Vous",
+    "assistant": "AgriX",
+    "draft": "La progression reste dans cet onglet"
+  },
+  "screens": [
+    {
+      "id": "map",
+      "title": "Commençons par votre terre",
+      "subtitle": "Trouvez votre parcelle, puis tracez sa limite.",
+      "kind": "map",
+      "blocks": [
+        {
+          "type": "input",
+          "label": "Rechercher une localité",
+          "value": "Settat, Maroc"
+        },
+        {
+          "type": "card",
+          "title": "Que peut-on cultiver ici ?",
+          "body": "Sélectionnez votre parcelle pour préparer un plan concret jusqu'à votre première vente."
+        }
+      ],
+      "primary": {
+        "label": "Choisir ma parcelle",
+        "target": "draw"
+      },
+      "secondary": {
+        "label": "Utiliser ma position",
+        "target": "draw"
+      }
+    },
+    {
+      "id": "draw",
+      "title": "Tracez votre parcelle",
+      "subtitle": "Touchez chaque coin. Fermez le contour pour terminer.",
+      "kind": "draw",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "2,0 hectares",
+          "body": "Surface estimée. Déplacez un point pour ajuster la limite."
+        }
+      ],
+      "primary": {
+        "label": "Confirmer la parcelle",
+        "target": "analysis"
+      },
+      "secondary": {
+        "label": "Modifier le contour",
+        "target": "draw"
+      }
+    },
+    {
+      "id": "analysis",
+      "title": "Découvrons votre terre",
+      "subtitle": "Votre parcelle est confirmée. Nous vérifions les informations disponibles.",
+      "kind": "analysis",
+      "blocks": [
+        {
+          "type": "miniMap"
+        },
+        {
+          "type": "progress",
+          "label": "3 vérifications sur 5 prêtes"
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Historique des pluies",
+              "value": "Prêt"
+            },
+            {
+              "label": "Propriétés du sol",
+              "value": "Prêt"
+            },
+            {
+              "label": "Relief",
+              "value": "Prêt"
+            },
+            {
+              "label": "Humidité du sol",
+              "value": "En cours"
+            },
+            {
+              "label": "Historique de la végétation",
+              "value": "En cours"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "Vous pouvez continuer avec les résultats disponibles."
+        }
+      ],
+      "primary": {
+        "label": "Voir ma terre",
+        "target": "land"
+      },
+      "secondary": {
+        "label": "Voir un exemple de données manquantes",
+        "target": "partial"
+      }
+    },
+    {
+      "id": "land",
+      "title": "Ce que votre terre nous apprend",
+      "subtitle": "Settat · 2,0 hectares · estimations de la zone",
+      "kind": "land",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Le point à vérifier",
+          "value": "Planifier selon les pluies",
+          "body": "Ce pilote illustre une parcelle pluviale. Confirmez les pluies locales et les périodes de semis avant de choisir les cultures."
+        },
+        {
+          "type": "card",
+          "title": "La texture du sol est à vérifier",
+          "body": "Une estimation cartographique ne remplace pas une analyse du sol. Ajoutez la vôtre si vous en avez une."
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Pluies · estimation régionale",
+              "value": "Voir l'historique"
+            },
+            {
+              "label": "Humidité du sol · estimation régionale",
+              "value": "Contexte disponible"
+            },
+            {
+              "label": "Relief et végétation",
+              "value": "Voir les détails"
+            },
+            {
+              "label": "Analyse du sol · mesure au champ",
+              "value": "Non fourni"
+            }
+          ]
+        },
+        {
+          "type": "action",
+          "label": "Sources et fiabilité",
+          "target": "sources"
+        }
+      ],
+      "primary": {
+        "label": "Parlez-nous de votre ferme",
+        "target": "farm"
+      }
+    },
+    {
+      "id": "farm",
+      "title": "Sur quoi votre ferme peut-elle compter ?",
+      "subtitle": "Quelques détails nous aident à proposer des plans réalisables.",
+      "kind": "form",
+      "blocks": [
+        {
+          "type": "chips",
+          "label": "Accès à l'eau",
+          "items": ["Pluvial", "Irrigué", "Je ne sais pas"]
+        },
+        {
+          "type": "input",
+          "label": "Argent disponible avant les ventes · DH",
+          "value": "14 000"
+        },
+        {
+          "type": "chips",
+          "label": "Culture précédente",
+          "items": ["Blé", "Autre culture", "Je ne sais pas"]
+        },
+        {
+          "type": "chips",
+          "label": "Avez-vous une analyse du sol ?",
+          "items": ["Ajouter une analyse", "Pas encore"]
+        },
+        {
+          "type": "note",
+          "body": "Une analyse au champ est prioritaire sur les estimations cartographiques."
+        }
+      ],
+      "primary": {
+        "label": "Suivant : travail et ventes",
+        "target": "work"
+      }
+    },
+    {
+      "id": "work",
+      "title": "Qui peut vous aider, et avec quoi ?",
+      "subtitle": "Vous pouvez choisir « Je ne sais pas » et compléter plus tard.",
+      "kind": "form",
+      "blocks": [
+        {
+          "type": "chips",
+          "label": "Accès aux machines",
+          "items": ["Louer sur place", "Matériel possédé", "Inconnu"]
+        },
+        {
+          "type": "chips",
+          "label": "Main-d'œuvre disponible",
+          "items": ["Famille + salariés", "Salariés", "Inconnu"]
+        },
+        {
+          "type": "chips",
+          "label": "Objectif principal",
+          "items": ["Moins d'argent à avancer", "Fourrage", "Meilleure marge"]
+        },
+        {
+          "type": "chips",
+          "label": "Où vendrez-vous ?",
+          "items": ["Coopérative", "Acheteur local", "Inconnu"]
+        },
+        {
+          "type": "note",
+          "body": "En cas d'irrigation, nous demandons aussi si l'eau est fiable. Les réponses inconnues restent visibles sur chaque plan."
+        }
+      ],
+      "primary": {
+        "label": "Voir les rotations possibles",
+        "target": "options"
+      },
+      "secondary": {
+        "label": "Voir le cas sans plan adapté",
+        "target": "no-fit"
+      }
+    },
+    {
+      "id": "options",
+      "title": "Choisissez un plan de culture",
+      "subtitle": "Même parcelle, mêmes dates, même scénario habituel.",
+      "kind": "options",
+      "blocks": [
+        {
+          "type": "chips",
+          "label": "Qu'est-ce qui compte le plus ?",
+          "items": [
+            "Moins d'argent",
+            "Temps sec",
+            "Moins de travail",
+            "Fourrage",
+            "Plus de marge"
+          ]
+        },
+        {
+          "type": "rotation",
+          "title": "Blé → Pois chiche",
+          "label": "Marge d’exemple plus élevée",
+          "body": "Nov. 2026–juil. 2028 · 2 saisons culturales\nPremière vente : juil. 2027 · diversification\nÀ vérifier : pluies, semences et acheteur",
+          "value": "12 000 DH avant la première vente",
+          "target": "plan"
+        },
+        {
+          "type": "rotation",
+          "title": "Orge → Pois chiche",
+          "label": "Plus de souplesse pour le fourrage",
+          "body": "Nov. 2026–juil. 2028 · 2 saisons culturales\nPremière vente : juin 2027\nCompromis : marge d'exemple plus faible",
+          "value": "10 000 DH avant la première vente",
+          "target": "compare"
+        },
+        {
+          "type": "note",
+          "body": "Successions et budgets illustratifs. L'adaptation locale reste à confirmer."
+        }
+      ],
+      "primary": {
+        "label": "Comparer ces 2 plans",
+        "target": "compare"
+      },
+      "secondary": {
+        "label": "Créer ma rotation",
+        "target": "builder"
+      }
+    },
+    {
+      "id": "compare",
+      "title": "Deux plans pour mieux choisir",
+      "subtitle": "2,0 ha · nov. 2026–juil. 2028 · exemple habituel",
+      "kind": "comparison",
+      "blocks": [
+        {
+          "type": "comparison",
+          "columns": ["Blé → Pois chiche", "Orge → Pois chiche"],
+          "rows": [
+            ["Durée", "2 saisons", "2 saisons"],
+            ["Avant la première vente", "12 000 DH", "10 000 DH"],
+            ["Marge d'exploitation", "10 000 DH", "8 000 DH"],
+            ["Pic de travail salarié", "8 jours", "6 jours"],
+            ["Machines", "Location nécessaire", "Location nécessaire"],
+            ["Risque principal", "Pluies tardives", "Prix de l'acheteur"]
+          ]
+        },
+        {
+          "type": "card",
+          "title": "Choisissez le compromis qui vous convient",
+          "body": "Dans cet exemple, l'orge demande 2 000 DH de moins avant les ventes. Le blé offre 2 000 DH de marge d'exploitation en plus sur la même période."
+        },
+        {
+          "type": "action",
+          "label": "Modifier les hypothèses communes",
+          "target": "edit"
+        }
+      ],
+      "primary": {
+        "label": "Explorer blé → pois chiche",
+        "target": "plan"
+      },
+      "secondary": {
+        "label": "Créer une autre rotation",
+        "target": "builder"
+      }
+    },
+    {
+      "id": "plan",
+      "title": "Blé → Pois chiche",
+      "subtitle": "Nov. 2026–juil. 2028 · 2 saisons culturales",
+      "kind": "plan",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Argent nécessaire avant la première vente",
+          "value": "12 000 DH",
+          "body": "Pour votre parcelle de 2,0 ha · budget d'exemple"
+        },
+        {
+          "type": "card",
+          "title": "Première action : confirmer la période de semis",
+          "body": "Les pluies, les semences et les dates des prestataires sont à confirmer localement. Première vente prévue : juil. 2027."
+        },
+        {
+          "type": "card",
+          "title": "Pourquoi envisager ce plan ?",
+          "body": "Atout : une céréale suivie d'une légumineuse diversifie les cultures. Compromis : financer la première saison et organiser les machines."
+        },
+        {
+          "type": "menu",
+          "items": [
+            {
+              "label": "Calendrier et premières tâches",
+              "target": "timeline"
+            },
+            {
+              "label": "Trésorerie et investissement initial",
+              "target": "cash"
+            },
+            {
+              "label": "Résultats et scénarios",
+              "target": "returns"
+            },
+            {
+              "label": "Historique des prix",
+              "target": "market"
+            },
+            {
+              "label": "Fournisseurs et services",
+              "target": "services"
+            },
+            {
+              "label": "Machines et main-d'œuvre",
+              "target": "resources"
+            }
+          ]
+        }
+      ],
+      "primary": {
+        "label": "Enregistrer ce plan",
+        "target": "saved"
+      }
+    },
+    {
+      "id": "timeline",
+      "title": "Du premier semis à la vente",
+      "subtitle": "Blé → Pois chiche · dates approximatives du pilote",
+      "kind": "timeline",
+      "blocks": [
+        {
+          "type": "timeline",
+          "items": [
+            {
+              "label": "Nov. 2026 · préparer et semer le blé",
+              "value": "Réserver machines + semences · 8 000 DH dépensés"
+            },
+            {
+              "label": "Fév.–mai 2027 · travaux au champ",
+              "value": "Prévoir les salariés · 2 000 DH dépensés"
+            },
+            {
+              "label": "Juin 2027 · récolte et transport",
+              "value": "Confirmer le prestataire · 2 000 DH dépensés"
+            },
+            {
+              "label": "Juil. 2027 · première vente de blé",
+              "value": "16 000 DH reçus · délai de paiement inclus"
+            },
+            {
+              "label": "Nov. 2027–juin 2028 · pois chiche",
+              "value": "9 000 DH de dépenses pour la saison"
+            },
+            {
+              "label": "Juil. 2028 · vente du pois chiche",
+              "value": "14 000 DH reçus"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "Semez seulement si la pluie et l'état du champ le permettent. Réservez main-d'œuvre et machines avant les travaux."
+        }
+      ],
+      "primary": {
+        "label": "Voir l'argent nécessaire",
+        "target": "cash"
+      }
+    },
+    {
+      "id": "cash",
+      "title": "Pouvez-vous financer le plan ?",
+      "subtitle": "Trésorerie d'exemple · parcelle entière · 2,0 ha",
+      "kind": "cash",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Avant la première vente · juil. 2027",
+          "value": "12 000 DH",
+          "body": "Disponible : 14 000 DH · réserve de 2 000 DH"
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Installation unique · nov. 2026",
+              "value": "1 000 DH"
+            },
+            {
+              "label": "Semences et intrants · nov. 2026",
+              "value": "4 000 DH"
+            },
+            {
+              "label": "Location des machines · nov. + juin",
+              "value": "3 000 DH"
+            },
+            {
+              "label": "Travail salarié · fév.–juin",
+              "value": "2 000 DH"
+            },
+            {
+              "label": "Loyer et transport · nov.–juin",
+              "value": "2 000 DH"
+            }
+          ]
+        },
+        {
+          "type": "card",
+          "title": "Trésorerie initiale maximale : 12 000 DH",
+          "body": "Le plus grand manque de trésorerie du plan arrive aussi avant la première vente. Les recettes du blé en juil. 2027 aident à payer la saison suivante."
+        },
+        {
+          "type": "note",
+          "body": "Installation comptée une seule fois. Les recettes suivent les dates de paiement, pas de récolte. Tous les montants sont des exemples modifiables."
+        }
+      ],
+      "primary": {
+        "label": "Essayer un autre budget",
+        "target": "edit"
+      },
+      "secondary": {
+        "label": "Voir les résultats estimés",
+        "target": "returns"
+      }
+    },
+    {
+      "id": "returns",
+      "title": "Que pourrait-il rester ?",
+      "subtitle": "Chiffres illustratifs · 2 saisons · 2,0 ha",
+      "kind": "returns",
+      "blocks": [
+        {
+          "type": "chips",
+          "label": "Exemple du graphique",
+          "items": ["Sec", "Habituel", "Favorable"]
+        },
+        {
+          "type": "chart",
+          "label": "Trésorerie après installation · DH",
+          "values": [-1000, 9000, 17000],
+          "labels": ["Sec", "Habituel", "Favorable"]
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Recettes de l'exemple habituel",
+              "value": "30 000 DH"
+            },
+            {
+              "label": "Dépenses d'exploitation",
+              "value": "20 000 DH"
+            },
+            {
+              "label": "Marge d'exploitation",
+              "value": "10 000 DH"
+            },
+            {
+              "label": "Installation unique",
+              "value": "1 000 DH"
+            },
+            {
+              "label": "Trésorerie après installation",
+              "value": "9 000 DH"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "Par hectare : 15 000 DH de recettes ; 5 000 DH de marge ; 4 500 DH après installation. Le travail familial est valorisé séparément."
+        },
+        {
+          "type": "action",
+          "label": "Revoir rendement, prix et seuil de rentabilité",
+          "target": "edit"
+        }
+      ],
+      "primary": {
+        "label": "Essayer un autre budget",
+        "target": "edit"
+      }
+    },
+    {
+      "id": "edit",
+      "title": "Revoir les hypothèses",
+      "subtitle": "Essayez un autre budget. Prix, rendement, machines et dates restent des hypothèses fictives en lecture seule.",
+      "kind": "form",
+      "blocks": [
+        {
+          "type": "input",
+          "label": "Argent disponible · DH",
+          "value": "10 000"
+        },
+        {
+          "type": "input",
+          "label": "Prix de vente du blé · DH / tonne",
+          "value": "3 200"
+        },
+        {
+          "type": "input",
+          "label": "Rendement du blé · tonnes / ha",
+          "value": "2,5"
+        },
+        {
+          "type": "input",
+          "label": "Location des machines · DH / ha",
+          "value": "1 500"
+        },
+        {
+          "type": "input",
+          "label": "Période de semis prévue",
+          "value": "Nov. 2026 · selon la pluie"
+        },
+        {
+          "type": "note",
+          "body": "Exemple blé : seuil de recettes de 11 000 DH pour 2 ha ; à 2,5 t/ha, prix d'équilibre de 2 200 DH/t. Seul l’argent disponible est modifiable ici. Appliquer le budget actualise le manque dans la comparaison et le chat ; les autres hypothèses restent fixes."
+        }
+      ],
+      "primary": {
+        "label": "Voir le changement de budget",
+        "target": "updated"
+      },
+      "secondary": {
+        "label": "Garder le budget actuel",
+        "target": "plan"
+      }
+    },
+    {
+      "id": "updated",
+      "title": "Il vous faudrait 2 000 DH de plus",
+      "subtitle": "Aperçu · vos hypothèses enregistrées n'ont pas changé.",
+      "kind": "updated",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Manque avant la première vente",
+          "value": "2 000 DH",
+          "body": "12 000 DH nécessaires − 10 000 DH disponibles"
+        },
+        {
+          "type": "card",
+          "title": "Qu'est-ce qui a changé ?",
+          "body": "Vous avez réduit l'argent disponible de 14 000 à 10 000 DH. Coûts et recettes prévus sont inchangés. Il reste 9 000 DH après installation dans l'exemple habituel."
+        },
+        {
+          "type": "card",
+          "title": "Une option qui demande moins d'argent",
+          "body": "Orge → Pois chiche demande 10 000 DH avant les ventes dans cet exemple. Sa marge estimée est aussi plus faible."
+        },
+        {
+          "type": "note",
+          "body": "Appliquer ce changement met à jour le plan, la comparaison et le contexte d'AgriX ensemble."
+        }
+      ],
+      "primary": {
+        "label": "Appliquer ces hypothèses",
+        "target": "plan"
+      },
+      "secondary": {
+        "label": "Comparer l'option moins coûteuse",
+        "target": "compare"
+      }
+    },
+    {
+      "id": "market",
+      "title": "Vérifiez le prix de vente prévu",
+      "subtitle": "Blé · pilote à Settat · DH par tonne",
+      "kind": "market",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "Historique local vérifié indisponible",
+          "body": "Les prix historiques au départ de la ferme n'ont pas été vérifiés pour ce pilote. Aucun graphique historique n'est montré sans source et période."
+        },
+        {
+          "type": "hero",
+          "label": "Futur prix de vente · hypothèse",
+          "value": "3 200 DH / t",
+          "body": "Hypothèse fictive en lecture seule, distincte des prix historiques."
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Catégorie de prix recherchée",
+              "value": "Départ ferme"
+            },
+            {
+              "label": "Marché / région recherchée",
+              "value": "Settat"
+            },
+            {
+              "label": "Dates des observations",
+              "value": "Non vérifié"
+            },
+            {
+              "label": "Questions à poser à l'acheteur",
+              "value": "Qualité, frais, date de paiement"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "Quand disponibles : afficher les observations datées, la source, les unités et une explication simple. Un prix passé ne garantit pas un prix futur."
+        }
+      ],
+      "primary": {
+        "label": "Revoir les hypothèses",
+        "target": "edit"
+      }
+    },
+    {
+      "id": "services",
+      "title": "Trouvez les personnes utiles",
+      "subtitle": "Semences, machines, transport et ventes",
+      "kind": "services",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "Commencez par une coopérative locale",
+          "body": "Renseignez-vous sur les semences certifiées, les prestataires de récolte et les acheteurs. Confirmez les disponibilités à vos dates."
+        },
+        {
+          "type": "menu",
+          "items": [
+            {
+              "label": "Fournisseurs de semences et d'intrants",
+              "target": "resources"
+            },
+            {
+              "label": "Prestataires de machines",
+              "target": "resources"
+            },
+            {
+              "label": "Points de collecte et acheteurs",
+              "target": "market"
+            }
+          ]
+        },
+        {
+          "type": "card",
+          "title": "Avant d'accepter un devis",
+          "body": "Demandez le prix et l'unité, la zone desservie, l'opérateur inclus, les déplacements, la date des travaux et les conditions de paiement."
+        },
+        {
+          "type": "note",
+          "body": "Aucun fournisseur ni contact n'est vérifié pour ce pilote. Les futures fiches indiqueront lieu, contact public et date de vérification."
+        }
+      ],
+      "primary": {
+        "label": "Prévoir machines et main-d'œuvre",
+        "target": "resources"
+      }
+    },
+    {
+      "id": "resources",
+      "title": "Réservez les travaux avant de semer",
+      "subtitle": "Première saison de blé · besoins illustratifs · 2 ha",
+      "kind": "resources",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "Machines · location avec opérateur",
+          "body": "Préparation + semis + récolte\n3 000 DH / parcelle · 1 500 DH / ha\nOpérateur inclus. Confirmez dates et devis."
+        },
+        {
+          "type": "chips",
+          "label": "Explorer les accès",
+          "items": [
+            "Location",
+            "Partagé",
+            "Matériel possédé",
+            "Comparer l'achat"
+          ]
+        },
+        {
+          "type": "card",
+          "title": "Équipe · prévoyez les semaines chargées",
+          "body": "Salariés : 8 journées × 250 DH = 2 000 DH\nFamille : 4 journées · comptées à part\nPic : semis et récolte. Équipe à organiser."
+        },
+        {
+          "type": "card",
+          "title": "Valoriser le temps familial à part",
+          "body": "À 250 DH/jour, le temps familial vaut 1 000 DH. Ce n'est pas un paiement en espèces dans ce budget."
+        },
+        {
+          "type": "note",
+          "body": "Comparaison d'achat indisponible sans prix vérifié et usage prévu. Ne comptez pas l'opérateur deux fois."
+        }
+      ],
+      "primary": {
+        "label": "Revenir à mon plan",
+        "target": "plan"
+      }
+    },
+    {
+      "id": "builder",
+      "title": "Créer ma rotation",
+      "subtitle": "Choisissez une culture par saison. Gardez la même parcelle et les mêmes contraintes.",
+      "kind": "builder",
+      "blocks": [
+        {
+          "type": "crops",
+          "label": "Catalogue du pilote",
+          "items": ["Blé", "Orge", "Pois chiche", "Jachère"]
+        },
+        {
+          "type": "timeline",
+          "items": [
+            {
+              "label": "Saison 1 · Blé",
+              "value": "Nov. 2026–juin 2027 · déplacer ou modifier"
+            },
+            {
+              "label": "Saison 2 · Pois chiche",
+              "value": "Nov. 2027–juin 2028 · déplacer ou modifier"
+            }
+          ]
+        },
+        {
+          "type": "action",
+          "label": "+ Ajouter une saison ou une jachère",
+          "target": "builder"
+        },
+        {
+          "type": "card",
+          "title": "2 saisons culturales",
+          "body": "Nov. 2026–juil. 2028 · première vente possible en juil. 2027. Brouillon conservé pendant les modifications."
+        }
+      ],
+      "primary": {
+        "label": "Vérifier ma rotation",
+        "target": "ready"
+      },
+      "secondary": {
+        "label": "Voir un exemple d'information manquante",
+        "target": "needs"
+      }
+    },
+    {
+      "id": "ready",
+      "title": "Votre succession passe les vérifications",
+      "subtitle": "Réalisable avec les données d'exemple actuelles",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Blé → Pois chiche",
+          "value": "Prêt à examiner",
+          "body": "2 saisons · 12 000 DH avant la première vente"
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Ordre des cultures et périodes",
+              "value": "Conforme aux règles du pilote"
+            },
+            {
+              "label": "Besoins de culture pluviale",
+              "value": "Compatible avec vos données"
+            },
+            {
+              "label": "Argent disponible",
+              "value": "14 000 DH"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "Sol, pluies, semences, dates des prestataires et conditions de vente restent à confirmer localement. Plans proposés et personnalisés utilisent le même rapport et les mêmes calculs."
+        }
+      ],
+      "primary": {
+        "label": "Ouvrir le plan complet",
+        "target": "plan"
+      },
+      "secondary": {
+        "label": "Voir un exemple de culture incompatible",
+        "target": "conflict"
+      }
+    },
+    {
+      "id": "chat",
+      "title": "Demander à AgriX",
+      "subtitle": "Votre parcelle et votre plan restent dans la conversation.",
+      "kind": "chat",
+      "blocks": [
+        {
+          "type": "note",
+          "body": "Settat · 2,0 ha · Blé → Pois chiche · exemple habituel"
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "body": "شحال خاصني قبل أول بيعة؟"
+        },
+        {
+          "type": "message",
+          "role": "assistant",
+          "body": "فهاد المثال، خاصك 12,000 درهم قبل أول بيعة. هاد المبلغ للأرض كاملة، وكيجمع التحضير والزريعة والخدمة والنقل. خاصك تأكد الأثمنة والتواريخ محلياً."
+        },
+        {
+          "type": "action",
+          "label": "Voir le détail des dépenses · 12 000 DH",
+          "target": "cash"
+        },
+        {
+          "type": "chips",
+          "label": "Essayez de demander",
+          "items": ["واش نقدر نكري الماكينة؟", "إلا تأخر الشتا؟"]
+        },
+        {
+          "type": "input",
+          "label": "Écrire une question",
+          "value": "Essayer un budget plus faible…"
+        },
+        {
+          "type": "note",
+          "body": "Pour modifier une hypothèse, AgriX affiche un aperçu et vous demande confirmation avant l'enregistrement."
+        }
+      ],
+      "primary": {
+        "label": "Voir un changement de budget",
+        "target": "edit"
+      }
+    },
+    {
+      "id": "saved",
+      "title": "Un plan à retrouver plus tard",
+      "subtitle": "Parcelle, succession et hypothèses sont conservées ensemble.",
+      "kind": "saved",
+      "blocks": [
+        {
+          "type": "miniMap"
+        },
+        {
+          "type": "rotation",
+          "title": "Blé → Pois chiche",
+          "label": "Présélection enregistrée",
+          "body": "2,0 ha · 2 saisons · exemple habituel\n12 000 DH avant la première vente\nArgent disponible : 14 000 DH",
+          "value": "Ensuite : confirmer les conditions de semis",
+          "target": "plan"
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Vérifier sol et pluies sur place",
+              "value": "À confirmer"
+            },
+            {
+              "label": "Réserver semences et machines",
+              "value": "À confirmer"
+            },
+            {
+              "label": "Accorder vente et paiement avec l'acheteur",
+              "value": "À confirmer"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "Votre parcelle précise et vos données restent privées, sauf si vous les partagez. Modifier la parcelle actualise les résultats liés."
+        }
+      ],
+      "primary": {
+        "label": "Rouvrir mon plan",
+        "target": "plan"
+      },
+      "secondary": {
+        "label": "Modifier ma parcelle",
+        "target": "draw"
+      }
+    },
+    {
+      "id": "invalid",
+      "title": "Deux côtés se croisent",
+      "subtitle": "Déplacez un coin pour suivre les limites de votre parcelle.",
+      "kind": "invalid",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "Le contour a besoin d'une correction",
+          "body": "Déplacez le point indiqué, annulez le dernier point ou redessinez. Le reste est conservé."
+        }
+      ],
+      "primary": {
+        "label": "Ajuster la limite",
+        "target": "draw"
+      },
+      "secondary": {
+        "label": "Redessiner ma parcelle",
+        "target": "draw"
+      }
+    },
+    {
+      "id": "partial",
+      "title": "Certains résultats sont prêts",
+      "subtitle": "La parcelle choisie est conservée lorsqu'une source est indisponible.",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Historique des pluies",
+              "value": "Prêt"
+            },
+            {
+              "label": "Propriétés du sol",
+              "value": "Prêt"
+            },
+            {
+              "label": "Relief",
+              "value": "Prêt"
+            },
+            {
+              "label": "Service d'humidité du sol",
+              "value": "Échec du chargement"
+            },
+            {
+              "label": "Analyse du sol de votre champ",
+              "value": "Non fourni"
+            }
+          ]
+        },
+        {
+          "type": "card",
+          "title": "Une source indisponible diffère d'une donnée inconnue",
+          "body": "Réessayez l'humidité du sol au retour du service. Ajoutez une analyse au champ dès que vous en avez une."
+        },
+        {
+          "type": "note",
+          "body": "Continuez avec les éléments disponibles. Les conclusions liées aux données manquantes restent en attente."
+        }
+      ],
+      "primary": {
+        "label": "Continuer avec les résultats disponibles",
+        "target": "land"
+      },
+      "secondary": {
+        "label": "Réessayer la source manquante",
+        "target": "analysis"
+      }
+    },
+    {
+      "id": "sources",
+      "title": "D'où viennent les informations ?",
+      "subtitle": "Estimations, mesures et vos réponses sont identifiées.",
+      "kind": "sources",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Pluies · NASA GPM IMERG",
+              "value": "Historique régional"
+            },
+            {
+              "label": "Humidité · NASA SMAP",
+              "value": "Grille régionale de 9 km"
+            },
+            {
+              "label": "Propriétés du sol · SoilGrids",
+              "value": "Estimation à 250 m"
+            },
+            {
+              "label": "Végétation · NASA HLS",
+              "value": "Selon la couverture"
+            },
+            {
+              "label": "Analyse du sol au champ",
+              "value": "Non fourni"
+            },
+            {
+              "label": "Eau pluviale et budget",
+              "value": "Réponse du fermier"
+            }
+          ]
+        },
+        {
+          "type": "card",
+          "title": "Une grille peut dépasser votre parcelle",
+          "body": "Les valeurs régionales décrivent les alentours. Elles ne sont pas mesurées dans votre champ."
+        },
+        {
+          "type": "note",
+          "body": "Aucune observation récupérée n'est jointe au pilote. Chaque couche réelle doit indiquer date ou période, résolution, unités, source et limites."
+        }
+      ],
+      "primary": {
+        "label": "Revenir au résumé de la terre",
+        "target": "land"
+      }
+    },
+    {
+      "id": "needs",
+      "title": "Une réponse avant la vérification",
+      "subtitle": "Votre brouillon personnalisé est conservé.",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Confirmation nécessaire",
+          "value": "La culture précédente était-elle une légumineuse ?",
+          "body": "La vérification de la succession dépend de ce qui poussait ici auparavant."
+        },
+        {
+          "type": "chips",
+          "label": "Culture précédente",
+          "items": ["Pois chiche", "Céréale", "Je ne sais pas"]
+        },
+        {
+          "type": "note",
+          "body": "Le calendrier reste visible. Faisabilité et estimations concernées restent en attente de l'information manquante."
+        }
+      ],
+      "primary": {
+        "label": "Mettre à jour les données de la ferme",
+        "target": "farm"
+      },
+      "secondary": {
+        "label": "Continuer mon brouillon",
+        "target": "builder"
+      }
+    },
+    {
+      "id": "conflict",
+      "title": "Cette culture demande un autre contexte",
+      "subtitle": "Incompatible avec les conditions pluviales actuelles du pilote",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Saison 2 · exemple de culture irriguée",
+          "value": "L'accès à l'eau ne convient pas",
+          "body": "Cette culture du catalogue exige une irrigation fiable, mais la parcelle est indiquée comme pluviale."
+        },
+        {
+          "type": "card",
+          "title": "Essayez une culture pluviale du catalogue",
+          "body": "Remplacez la culture incompatible, ajustez la période si possible, ou corrigez l'accès à l'eau. Vérifiez toute la rotation à nouveau."
+        },
+        {
+          "type": "note",
+          "body": "Votre brouillon reste disponible. Une culture incompatible ne peut pas ouvrir un rapport de plan réalisable."
+        }
+      ],
+      "primary": {
+        "label": "Changer la culture et revérifier",
+        "target": "builder"
+      },
+      "secondary": {
+        "label": "Modifier l'accès à l'eau",
+        "target": "farm"
+      }
+    },
+    {
+      "id": "no-fit",
+      "title": "Aucun plan ne correspond encore",
+      "subtitle": "Votre parcelle et vos réponses sont conservées.",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Contrainte de trésorerie · exemple",
+          "value": "Budget inférieur à 10 000 DH",
+          "body": "Toutes les options actuelles du pilote demandent plus d'argent avant la première vente."
+        },
+        {
+          "type": "card",
+          "title": "Que peut-on changer ?",
+          "body": "Revoyez l'argent disponible, actualisez les coûts de location locaux ou créez une autre succession du catalogue. Nous expliquerons ce qui change."
+        },
+        {
+          "type": "note",
+          "body": "L'absence de plan adapté est aussi un résultat. AgriX garde les contraintes visibles dans ses recommandations."
+        }
+      ],
+      "primary": {
+        "label": "Revoir mes contraintes",
+        "target": "farm"
+      },
+      "secondary": {
+        "label": "Créer une autre succession",
+        "target": "builder"
+      }
+    },
+    {
+      "id": "offline",
+      "title": "Votre progression est toujours là",
+      "subtitle": "La connexion a été interrompue.",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "miniMap"
+        },
+        {
+          "type": "card",
+          "title": "Parcelle et brouillon conservés",
+          "body": "Nous réessaierons les informations manquantes à la reconnexion. Les résultats disponibles restent visibles avec leur date et leur statut."
+        },
+        {
+          "type": "card",
+          "title": "Si vous modifiez la limite",
+          "body": "L'analyse du sol et du climat, la faisabilité, les coûts, la comparaison et le chat doivent être actualisés pour la nouvelle parcelle."
+        }
+      ],
+      "primary": {
+        "label": "Réessayer la connexion",
+        "target": "analysis"
+      },
+      "secondary": {
+        "label": "Voir le plan enregistré",
+        "target": "saved"
+      }
+    }
+  ]
+}

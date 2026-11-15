@@ -1,0 +1,1191 @@
+{
+  "locale": "en",
+  "language": "English",
+  "rtl": false,
+  "ui": {
+    "brand": "AgriX",
+    "language": "EN · FR · الدارجة",
+    "back": "Back",
+    "help": "Ask AgriX",
+    "map": "My plot",
+    "plans": "Plans",
+    "saved": "Saved",
+    "example": "Illustrative Settat pilot · example figures",
+    "step": "Step",
+    "source": "Map: Esri World Imagery · illustrative boundary",
+    "north": "N",
+    "zoom": "Zoom",
+    "location": "My location",
+    "draw": "Place boundary points",
+    "undo": "Undo",
+    "redraw": "Redraw",
+    "area": "Estimated area · 2.0 ha",
+    "privacy": "Your plot stays private",
+    "edit": "Edit",
+    "details": "See details",
+    "demo": "Example figures · verify locally",
+    "date": "14 Nov 2026",
+    "unit": "Whole plot · 2.0 ha",
+    "context": "Settat · 2.0 ha · rainfed",
+    "you": "You",
+    "assistant": "AgriX",
+    "draft": "Preview progress stays in this tab"
+  },
+  "screens": [
+    {
+      "id": "map",
+      "title": "Start with your land",
+      "subtitle": "Find your plot, then trace its boundary.",
+      "kind": "map",
+      "blocks": [
+        {
+          "type": "input",
+          "label": "Search a locality",
+          "value": "Settat, Morocco"
+        },
+        {
+          "type": "card",
+          "title": "What could grow here?",
+          "body": "Select your plot to explore a practical plan for your first sale."
+        }
+      ],
+      "primary": {
+        "label": "Select my plot",
+        "target": "draw"
+      },
+      "secondary": {
+        "label": "Use my location",
+        "target": "draw"
+      }
+    },
+    {
+      "id": "draw",
+      "title": "Trace your plot",
+      "subtitle": "Tap each corner. Close the outline to finish.",
+      "kind": "draw",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "2.0 hectares",
+          "body": "Estimated area. Drag a point to adjust your boundary."
+        }
+      ],
+      "primary": {
+        "label": "Confirm plot",
+        "target": "analysis"
+      },
+      "secondary": {
+        "label": "Edit outline",
+        "target": "draw"
+      }
+    },
+    {
+      "id": "analysis",
+      "title": "Getting to know your land",
+      "subtitle": "Your plot is confirmed. We are checking the available information.",
+      "kind": "analysis",
+      "blocks": [
+        {
+          "type": "miniMap"
+        },
+        {
+          "type": "progress",
+          "label": "3 of 5 checks ready"
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Rainfall history",
+              "value": "Ready"
+            },
+            {
+              "label": "Soil properties",
+              "value": "Ready"
+            },
+            {
+              "label": "Terrain",
+              "value": "Ready"
+            },
+            {
+              "label": "Soil moisture",
+              "value": "Checking"
+            },
+            {
+              "label": "Vegetation history",
+              "value": "Checking"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "You can continue with available results."
+        }
+      ],
+      "primary": {
+        "label": "Review my land",
+        "target": "land"
+      },
+      "secondary": {
+        "label": "View missing-data example",
+        "target": "partial"
+      }
+    },
+    {
+      "id": "land",
+      "title": "What your land tells us",
+      "subtitle": "Settat · 2.0 hectares · area estimates",
+      "kind": "land",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Main thing to check",
+          "value": "Plan around the rain",
+          "body": "The pilot illustrates a rainfed plot. Confirm local rainfall and planting windows before choosing crops."
+        },
+        {
+          "type": "card",
+          "title": "Soil texture needs checking",
+          "body": "Map estimates cannot replace a soil test. Add your own test if you have one."
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Rainfall · regional estimate",
+              "value": "Review history"
+            },
+            {
+              "label": "Soil moisture · regional estimate",
+              "value": "Available context"
+            },
+            {
+              "label": "Terrain and vegetation",
+              "value": "See details"
+            },
+            {
+              "label": "Soil test · field measurement",
+              "value": "Not provided"
+            }
+          ]
+        },
+        {
+          "type": "action",
+          "label": "Sources and confidence",
+          "target": "sources"
+        }
+      ],
+      "primary": {
+        "label": "Tell us about your farm",
+        "target": "farm"
+      }
+    },
+    {
+      "id": "farm",
+      "title": "What can your farm rely on?",
+      "subtitle": "A few details help us show plans you can carry out.",
+      "kind": "form",
+      "blocks": [
+        {
+          "type": "chips",
+          "label": "Water access",
+          "items": ["Rainfed", "Irrigated", "I don't know"]
+        },
+        {
+          "type": "input",
+          "label": "Cash available before sales · DH",
+          "value": "14,000"
+        },
+        {
+          "type": "chips",
+          "label": "Previous crop",
+          "items": ["Wheat", "Other crop", "I don't know"]
+        },
+        {
+          "type": "chips",
+          "label": "Have a soil test?",
+          "items": ["Add a test", "Not yet"]
+        },
+        {
+          "type": "note",
+          "body": "A field test takes priority over map estimates."
+        }
+      ],
+      "primary": {
+        "label": "Next: work and sales",
+        "target": "work"
+      }
+    },
+    {
+      "id": "work",
+      "title": "Who and what can help?",
+      "subtitle": "You can choose “I don't know” and fill this in later.",
+      "kind": "form",
+      "blocks": [
+        {
+          "type": "chips",
+          "label": "Machinery access",
+          "items": ["Hire locally", "Owned", "Unknown"]
+        },
+        {
+          "type": "chips",
+          "label": "Available labor",
+          "items": ["Family + hired", "Hired", "Unknown"]
+        },
+        {
+          "type": "chips",
+          "label": "Main goal",
+          "items": ["Lower cash need", "Fodder", "Higher margin"]
+        },
+        {
+          "type": "chips",
+          "label": "Where will you sell?",
+          "items": ["Cooperative", "Local buyer", "Unknown"]
+        },
+        {
+          "type": "note",
+          "body": "If irrigated, we also ask how reliable the water supply is. Unknown answers remain visible on each plan."
+        }
+      ],
+      "primary": {
+        "label": "Show rotation options",
+        "target": "options"
+      },
+      "secondary": {
+        "label": "See when no plan fits",
+        "target": "no-fit"
+      }
+    },
+    {
+      "id": "options",
+      "title": "Choose a growing plan",
+      "subtitle": "Same plot, same dates, same typical scenario.",
+      "kind": "options",
+      "blocks": [
+        {
+          "type": "chips",
+          "label": "What matters most?",
+          "items": [
+            "Less cash",
+            "Dry weather",
+            "Less labor",
+            "Fodder",
+            "More margin"
+          ]
+        },
+        {
+          "type": "rotation",
+          "title": "Wheat → Chickpea",
+          "label": "Higher example margin",
+          "body": "Nov 2026–Jul 2028 · 2 growing seasons\nFirst sale: Jul 2027 · soil diversification\nCheck: rainfall, seed and buyer",
+          "value": "12,000 DH before first sale",
+          "target": "plan"
+        },
+        {
+          "type": "rotation",
+          "title": "Barley → Chickpea",
+          "label": "More fodder flexibility",
+          "body": "Nov 2026–Jul 2028 · 2 growing seasons\nFirst sale: Jun 2027\nTrade-off: lower example margin",
+          "value": "10,000 DH before first sale",
+          "target": "compare"
+        },
+        {
+          "type": "note",
+          "body": "Illustrative crop sequences and budgets. Local suitability still needs confirmation."
+        }
+      ],
+      "primary": {
+        "label": "Compare these 2 plans",
+        "target": "compare"
+      },
+      "secondary": {
+        "label": "Build my rotation",
+        "target": "builder"
+      }
+    },
+    {
+      "id": "compare",
+      "title": "Two plans, one clear choice",
+      "subtitle": "2.0 ha · Nov 2026–Jul 2028 · typical example",
+      "kind": "comparison",
+      "blocks": [
+        {
+          "type": "comparison",
+          "columns": ["Wheat → Chickpea", "Barley → Chickpea"],
+          "rows": [
+            ["Duration", "2 seasons", "2 seasons"],
+            ["Before first sale", "12,000 DH", "10,000 DH"],
+            ["Operating margin", "10,000 DH", "8,000 DH"],
+            ["Peak paid labor", "8 days", "6 days"],
+            ["Machinery", "Hire needed", "Hire needed"],
+            ["Main risk", "Late rain", "Buyer price"]
+          ]
+        },
+        {
+          "type": "card",
+          "title": "Choose the trade-off you can manage",
+          "body": "Barley uses 2,000 DH less before sales in this example. Wheat has 2,000 DH more operating margin over the same period."
+        },
+        {
+          "type": "action",
+          "label": "Change shared assumptions",
+          "target": "edit"
+        }
+      ],
+      "primary": {
+        "label": "Explore wheat → chickpea",
+        "target": "plan"
+      },
+      "secondary": {
+        "label": "Build another rotation",
+        "target": "builder"
+      }
+    },
+    {
+      "id": "plan",
+      "title": "Wheat → Chickpea",
+      "subtitle": "Nov 2026–Jul 2028 · 2 growing seasons",
+      "kind": "plan",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Money needed before first sale",
+          "value": "12,000 DH",
+          "body": "For your 2.0 ha plot · example budget"
+        },
+        {
+          "type": "card",
+          "title": "First action: confirm the sowing window",
+          "body": "Rainfall, seed availability and contractor dates need local confirmation. First expected sale: Jul 2027."
+        },
+        {
+          "type": "card",
+          "title": "Why consider this plan?",
+          "body": "Benefit: a cereal followed by a legume adds variety. Trade-off: you need to fund the first season and arrange machinery."
+        },
+        {
+          "type": "menu",
+          "items": [
+            {
+              "label": "Timeline and first tasks",
+              "target": "timeline"
+            },
+            {
+              "label": "Cash and initial investment",
+              "target": "cash"
+            },
+            {
+              "label": "Returns and scenarios",
+              "target": "returns"
+            },
+            {
+              "label": "Market history",
+              "target": "market"
+            },
+            {
+              "label": "Suppliers and services",
+              "target": "services"
+            },
+            {
+              "label": "Machinery and labor",
+              "target": "resources"
+            }
+          ]
+        }
+      ],
+      "primary": {
+        "label": "Save this plan",
+        "target": "saved"
+      }
+    },
+    {
+      "id": "timeline",
+      "title": "From first sowing to sale",
+      "subtitle": "Wheat → Chickpea · approximate pilot dates",
+      "kind": "timeline",
+      "blocks": [
+        {
+          "type": "timeline",
+          "items": [
+            {
+              "label": "Nov 2026 · prepare and sow wheat",
+              "value": "Book machinery + seed · 8,000 DH out"
+            },
+            {
+              "label": "Feb–May 2027 · field work",
+              "value": "Arrange paid labor · 2,000 DH out"
+            },
+            {
+              "label": "Jun 2027 · harvest and transport",
+              "value": "Confirm contractor · 2,000 DH out"
+            },
+            {
+              "label": "Jul 2027 · first wheat sale",
+              "value": "16,000 DH in · payment delay included"
+            },
+            {
+              "label": "Nov 2027–Jun 2028 · chickpea",
+              "value": "9,000 DH season costs"
+            },
+            {
+              "label": "Jul 2028 · chickpea sale",
+              "value": "14,000 DH in"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "Plant only when local rain and field conditions allow. Book labor and machinery before the work window."
+        }
+      ],
+      "primary": {
+        "label": "See the cash needed",
+        "target": "cash"
+      }
+    },
+    {
+      "id": "cash",
+      "title": "Can you fund the plan?",
+      "subtitle": "Example cash flow · whole plot · 2.0 ha",
+      "kind": "cash",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Before the first sale · Jul 2027",
+          "value": "12,000 DH",
+          "body": "Available: 14,000 DH · 2,000 DH buffer"
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "One-time setup · Nov 2026",
+              "value": "1,000 DH"
+            },
+            {
+              "label": "Seed and inputs · Nov 2026",
+              "value": "4,000 DH"
+            },
+            {
+              "label": "Machinery hire · Nov + Jun",
+              "value": "3,000 DH"
+            },
+            {
+              "label": "Paid labor · Feb–Jun",
+              "value": "2,000 DH"
+            },
+            {
+              "label": "Rent and transport · Nov–Jun",
+              "value": "2,000 DH"
+            }
+          ]
+        },
+        {
+          "type": "card",
+          "title": "Peak opening cash: 12,000 DH",
+          "body": "The largest shortfall across the entire plan is also before the first sale. Wheat receipts in Jul 2027 help pay the next season."
+        },
+        {
+          "type": "note",
+          "body": "Setup counted once. Receipts follow payment dates, not harvest dates. All amounts are editable examples."
+        }
+      ],
+      "primary": {
+        "label": "Try a different budget",
+        "target": "edit"
+      },
+      "secondary": {
+        "label": "Review expected returns",
+        "target": "returns"
+      }
+    },
+    {
+      "id": "returns",
+      "title": "What might be left?",
+      "subtitle": "Illustrative figures · 2 seasons · 2.0 ha",
+      "kind": "returns",
+      "blocks": [
+        {
+          "type": "chips",
+          "label": "Chart example",
+          "items": ["Dry", "Typical", "Favorable"]
+        },
+        {
+          "type": "chart",
+          "label": "Plan cash after setup · DH",
+          "values": [-1000, 9000, 17000],
+          "labels": ["Dry", "Typical", "Favorable"]
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Typical example revenue",
+              "value": "30,000 DH"
+            },
+            {
+              "label": "Operating costs",
+              "value": "20,000 DH"
+            },
+            {
+              "label": "Operating margin",
+              "value": "10,000 DH"
+            },
+            {
+              "label": "One-time setup",
+              "value": "1,000 DH"
+            },
+            {
+              "label": "Cash after setup",
+              "value": "9,000 DH"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "Per hectare: 15,000 DH revenue; 5,000 DH margin; 4,500 DH after setup. Family labor value is shown separately."
+        },
+        {
+          "type": "action",
+          "label": "Review yield, price and break-even inputs",
+          "target": "edit"
+        }
+      ],
+      "primary": {
+        "label": "Try a different budget",
+        "target": "edit"
+      }
+    },
+    {
+      "id": "edit",
+      "title": "Review assumptions",
+      "subtitle": "Try a different budget. Price, yield, machinery and dates are read-only sample baselines.",
+      "kind": "form",
+      "blocks": [
+        {
+          "type": "input",
+          "label": "Cash available · DH",
+          "value": "10,000"
+        },
+        {
+          "type": "input",
+          "label": "Wheat sale price · DH / tonne",
+          "value": "3,200"
+        },
+        {
+          "type": "input",
+          "label": "Wheat yield · tonnes / ha",
+          "value": "2.5"
+        },
+        {
+          "type": "input",
+          "label": "Machinery hire · DH / ha",
+          "value": "1,500"
+        },
+        {
+          "type": "input",
+          "label": "Expected sowing window",
+          "value": "Nov 2026 · depends on rain"
+        },
+        {
+          "type": "note",
+          "body": "Example wheat break-even revenue: 11,000 DH for 2 ha; at 2.5 t/ha, break-even price is 2,200 DH/t. Only available cash can change here. Applying your budget updates the cash gap in comparison and chat; other example inputs stay fixed."
+        }
+      ],
+      "primary": {
+        "label": "Preview budget change",
+        "target": "updated"
+      },
+      "secondary": {
+        "label": "Keep current budget",
+        "target": "plan"
+      }
+    },
+    {
+      "id": "updated",
+      "title": "You would need 2,000 DH more",
+      "subtitle": "Preview · your saved assumptions have not changed.",
+      "kind": "updated",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Gap before the first sale",
+          "value": "2,000 DH",
+          "body": "12,000 DH needed − 10,000 DH available"
+        },
+        {
+          "type": "card",
+          "title": "What changed?",
+          "body": "You reduced available cash from 14,000 to 10,000 DH. Costs and expected receipts stayed the same. Cash after setup remains 9,000 DH in the typical example."
+        },
+        {
+          "type": "card",
+          "title": "A lower-cash alternative",
+          "body": "Barley → Chickpea needs 10,000 DH before sales in this example. It also has a lower expected margin."
+        },
+        {
+          "type": "note",
+          "body": "Applying this change updates the plan, comparison and Ask AgriX context together."
+        }
+      ],
+      "primary": {
+        "label": "Apply these assumptions",
+        "target": "plan"
+      },
+      "secondary": {
+        "label": "Compare lower-cash option",
+        "target": "compare"
+      }
+    },
+    {
+      "id": "market",
+      "title": "Check the sale-price assumption",
+      "subtitle": "Wheat · Settat pilot · DH per tonne",
+      "kind": "market",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "Verified local price history unavailable",
+          "body": "We have not verified historical farm-gate observations for this pilot. No historical chart is shown until a source and date range are available."
+        },
+        {
+          "type": "hero",
+          "label": "Future selling price · assumption",
+          "value": "3,200 DH / t",
+          "body": "Read-only sample baseline, separate from historical prices."
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Price category needed",
+              "value": "Farm-gate"
+            },
+            {
+              "label": "Market / region needed",
+              "value": "Settat"
+            },
+            {
+              "label": "Observation dates",
+              "value": "Not verified"
+            },
+            {
+              "label": "Questions for a buyer",
+              "value": "Grade, fees, payment date"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "When available: show dated price observations, source, units and a one-sentence explanation. Never treat a historic price as a future promise."
+        }
+      ],
+      "primary": {
+        "label": "Review assumptions",
+        "target": "edit"
+      }
+    },
+    {
+      "id": "services",
+      "title": "Find the people you need",
+      "subtitle": "Seed, machinery, transport and sales",
+      "kind": "services",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "Start with a local cooperative",
+          "body": "Ask about certified seed, harvest contractors and buyers. Confirm what is available for your dates."
+        },
+        {
+          "type": "menu",
+          "items": [
+            {
+              "label": "Seed and input suppliers",
+              "target": "resources"
+            },
+            {
+              "label": "Equipment contractors",
+              "target": "resources"
+            },
+            {
+              "label": "Collection points and buyers",
+              "target": "market"
+            }
+          ]
+        },
+        {
+          "type": "card",
+          "title": "Before you accept a quote",
+          "body": "Ask for price and unit, service area, operator inclusion, travel charges, work date and payment terms."
+        },
+        {
+          "type": "note",
+          "body": "No supplier names or contacts have been verified for this pilot. Future listings include location, public contact and date checked."
+        }
+      ],
+      "primary": {
+        "label": "Plan machinery and labor",
+        "target": "resources"
+      }
+    },
+    {
+      "id": "resources",
+      "title": "Book the work before you sow",
+      "subtitle": "First wheat season · example needs · whole plot · 2.0 ha",
+      "kind": "resources",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "Machinery · hire with an operator",
+          "body": "Land preparation + sowing + harvest\n3,000 DH / plot · 1,500 DH / ha\nOperator included. Confirm dates and quote."
+        },
+        {
+          "type": "chips",
+          "label": "Explore access",
+          "items": ["Hire", "Shared", "Owned", "Compare buying"]
+        },
+        {
+          "type": "card",
+          "title": "People · plan the busy weeks",
+          "body": "Paid: 8 person-days × 250 DH = 2,000 DH\nFamily: 4 person-days · shown separately\nPeak: sowing and harvest weeks. Workers not yet arranged."
+        },
+        {
+          "type": "card",
+          "title": "Value family time separately",
+          "body": "At 250 DH/day, family time is 1,000 DH. It is not a cash payment in this budget."
+        },
+        {
+          "type": "note",
+          "body": "Buying comparison unavailable until a verified purchase price and expected use are entered. Do not count the operator twice."
+        }
+      ],
+      "primary": {
+        "label": "Return to my plan",
+        "target": "plan"
+      }
+    },
+    {
+      "id": "builder",
+      "title": "Build my rotation",
+      "subtitle": "Choose a crop for each season. Keep the same plot and constraints.",
+      "kind": "builder",
+      "blocks": [
+        {
+          "type": "crops",
+          "label": "Supported pilot catalog",
+          "items": ["Wheat", "Barley", "Chickpea", "Fallow"]
+        },
+        {
+          "type": "timeline",
+          "items": [
+            {
+              "label": "Season 1 · Wheat",
+              "value": "Nov 2026–Jun 2027 · move or edit"
+            },
+            {
+              "label": "Season 2 · Chickpea",
+              "value": "Nov 2027–Jun 2028 · move or edit"
+            }
+          ]
+        },
+        {
+          "type": "action",
+          "label": "+ Add a season or fallow period",
+          "target": "builder"
+        },
+        {
+          "type": "card",
+          "title": "2 growing seasons",
+          "body": "Nov 2026–Jul 2028 · first possible sale Jul 2027. Draft is kept while you edit."
+        }
+      ],
+      "primary": {
+        "label": "Check my rotation",
+        "target": "ready"
+      },
+      "secondary": {
+        "label": "View a missing-input example",
+        "target": "needs"
+      }
+    },
+    {
+      "id": "ready",
+      "title": "Your sequence passes the pilot checks",
+      "subtitle": "Feasible with the current example inputs",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Wheat → Chickpea",
+          "value": "Ready to review",
+          "body": "2 seasons · 12,000 DH before first sale"
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Crop order and windows",
+              "value": "Fits pilot rules"
+            },
+            {
+              "label": "Rainfed requirement",
+              "value": "Fits current inputs"
+            },
+            {
+              "label": "Available cash",
+              "value": "14,000 DH"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "Local soil, rainfall, seed availability, contractor dates and buyer terms still need confirmation. Suggested and custom plans use the same report and calculations."
+        }
+      ],
+      "primary": {
+        "label": "Open the full plan",
+        "target": "plan"
+      },
+      "secondary": {
+        "label": "See a conflicting crop example",
+        "target": "conflict"
+      }
+    },
+    {
+      "id": "chat",
+      "title": "Ask AgriX",
+      "subtitle": "Your plot and current plan stay in the conversation.",
+      "kind": "chat",
+      "blocks": [
+        {
+          "type": "note",
+          "body": "Settat · 2.0 ha · Wheat → Chickpea · typical example"
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "body": "شحال خاصني قبل أول بيعة؟"
+        },
+        {
+          "type": "message",
+          "role": "assistant",
+          "body": "فهاد المثال، خاصك 12,000 درهم قبل أول بيعة. هاد المبلغ للأرض كاملة، وكيجمع التحضير والزريعة والخدمة والنقل. خاصك تأكد الأثمنة والتواريخ محلياً."
+        },
+        {
+          "type": "action",
+          "label": "Open cash breakdown · 12,000 DH",
+          "target": "cash"
+        },
+        {
+          "type": "chips",
+          "label": "Try asking",
+          "items": ["واش نقدر نكري الماكينة؟", "إلا تأخر الشتا؟"]
+        },
+        {
+          "type": "input",
+          "label": "Write a question",
+          "value": "Try a lower budget…"
+        },
+        {
+          "type": "note",
+          "body": "To change an assumption, AgriX shows a preview and asks you to confirm before saving."
+        }
+      ],
+      "primary": {
+        "label": "Preview a budget change",
+        "target": "edit"
+      }
+    },
+    {
+      "id": "saved",
+      "title": "A plan you can come back to",
+      "subtitle": "Your plot, sequence and assumptions are kept together.",
+      "kind": "saved",
+      "blocks": [
+        {
+          "type": "miniMap"
+        },
+        {
+          "type": "rotation",
+          "title": "Wheat → Chickpea",
+          "label": "Saved shortlist",
+          "body": "2.0 ha · 2 seasons · typical example\n12,000 DH before first sale\nAvailable cash: 14,000 DH",
+          "value": "Next: confirm sowing conditions",
+          "target": "plan"
+        },
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Check local soil and rainfall",
+              "value": "To confirm"
+            },
+            {
+              "label": "Book seed and machinery",
+              "value": "To confirm"
+            },
+            {
+              "label": "Agree buyer and payment terms",
+              "value": "To confirm"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "body": "Precise plot and farm inputs stay private unless you choose to share. Editing the plot refreshes dependent results."
+        }
+      ],
+      "primary": {
+        "label": "Reopen my plan",
+        "target": "plan"
+      },
+      "secondary": {
+        "label": "Edit my plot",
+        "target": "draw"
+      }
+    },
+    {
+      "id": "invalid",
+      "title": "Two edges cross",
+      "subtitle": "Move a corner so the boundary follows your plot.",
+      "kind": "invalid",
+      "blocks": [
+        {
+          "type": "card",
+          "title": "Your outline needs one correction",
+          "body": "Drag the highlighted point, undo the last point, or redraw. The rest of your work is kept."
+        }
+      ],
+      "primary": {
+        "label": "Adjust the boundary",
+        "target": "draw"
+      },
+      "secondary": {
+        "label": "Redraw my plot",
+        "target": "draw"
+      }
+    },
+    {
+      "id": "partial",
+      "title": "Some results are ready",
+      "subtitle": "The selected plot is kept while a source is unavailable.",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Rainfall history",
+              "value": "Ready"
+            },
+            {
+              "label": "Soil properties",
+              "value": "Ready"
+            },
+            {
+              "label": "Terrain",
+              "value": "Ready"
+            },
+            {
+              "label": "Soil moisture service",
+              "value": "Could not load"
+            },
+            {
+              "label": "Soil test from your field",
+              "value": "Not provided"
+            }
+          ]
+        },
+        {
+          "type": "card",
+          "title": "A missing source is different from an unknown input",
+          "body": "Retry soil moisture when the service returns. A field soil test can be added whenever you have one."
+        },
+        {
+          "type": "note",
+          "body": "Continue with available evidence. Conclusions that depend on missing information remain pending."
+        }
+      ],
+      "primary": {
+        "label": "Continue with available results",
+        "target": "land"
+      },
+      "secondary": {
+        "label": "Retry the missing source",
+        "target": "analysis"
+      }
+    },
+    {
+      "id": "sources",
+      "title": "Where the information comes from",
+      "subtitle": "Estimates, measurements and your answers are labeled.",
+      "kind": "sources",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            {
+              "label": "Rainfall · NASA GPM IMERG",
+              "value": "Regional history"
+            },
+            {
+              "label": "Moisture · NASA SMAP",
+              "value": "9 km regional grid"
+            },
+            {
+              "label": "Soil properties · SoilGrids",
+              "value": "250 m estimate"
+            },
+            {
+              "label": "Vegetation · NASA HLS",
+              "value": "Coverage dependent"
+            },
+            {
+              "label": "Field soil test",
+              "value": "Not provided"
+            },
+            {
+              "label": "Rainfed access and budget",
+              "value": "Farmer input"
+            }
+          ]
+        },
+        {
+          "type": "card",
+          "title": "A grid may be larger than your plot",
+          "body": "Regional values describe the surrounding area. They are not a measurement taken in your field."
+        },
+        {
+          "type": "note",
+          "body": "Pilot has no retrieved observations attached. Each live layer must show its date or period, resolution, units, source and limitations."
+        }
+      ],
+      "primary": {
+        "label": "Back to land summary",
+        "target": "land"
+      }
+    },
+    {
+      "id": "needs",
+      "title": "One answer before we can check",
+      "subtitle": "Your custom draft is kept.",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Needs confirmation",
+          "value": "Was the previous crop a legume?",
+          "body": "The sequence check depends on what grew here before."
+        },
+        {
+          "type": "chips",
+          "label": "Previous crop",
+          "items": ["Chickpea", "Cereal", "I don't know"]
+        },
+        {
+          "type": "note",
+          "body": "The timeline is visible. Feasibility and any affected estimates remain pending until the missing input is resolved."
+        }
+      ],
+      "primary": {
+        "label": "Update farm information",
+        "target": "farm"
+      },
+      "secondary": {
+        "label": "Keep editing my draft",
+        "target": "builder"
+      }
+    },
+    {
+      "id": "conflict",
+      "title": "This crop needs a different setup",
+      "subtitle": "Doesn't fit the current rainfed pilot conditions",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Season 2 · irrigated crop example",
+          "value": "Water access does not fit",
+          "body": "Reliable irrigation is required by this catalog entry, but the plot is marked rainfed."
+        },
+        {
+          "type": "card",
+          "title": "Try a supported rainfed crop",
+          "body": "Replace the conflicting crop, adjust the window where allowed, or correct your water-access information. Recheck the whole rotation."
+        },
+        {
+          "type": "note",
+          "body": "Your draft stays available. A conflicting crop cannot open a feasible-plan report."
+        }
+      ],
+      "primary": {
+        "label": "Change the crop and recheck",
+        "target": "builder"
+      },
+      "secondary": {
+        "label": "Update water access",
+        "target": "farm"
+      }
+    },
+    {
+      "id": "no-fit",
+      "title": "No plan fits those inputs yet",
+      "subtitle": "Your plot and answers are kept.",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "hero",
+          "label": "Cash constraint · example",
+          "value": "Budget below 10,000 DH",
+          "body": "Every current pilot option needs more cash before its first sale."
+        },
+        {
+          "type": "card",
+          "title": "What could change?",
+          "body": "Review available cash, update local hiring costs, or build another supported sequence. We will explain which requirement changes."
+        },
+        {
+          "type": "note",
+          "body": "No suitable option is a result too. AgriX does not hide constraints to show a recommendation."
+        }
+      ],
+      "primary": {
+        "label": "Review my constraints",
+        "target": "farm"
+      },
+      "secondary": {
+        "label": "Build another sequence",
+        "target": "builder"
+      }
+    },
+    {
+      "id": "offline",
+      "title": "Your progress is still here",
+      "subtitle": "The connection was interrupted.",
+      "kind": "state",
+      "blocks": [
+        {
+          "type": "miniMap"
+        },
+        {
+          "type": "card",
+          "title": "Plot and draft kept",
+          "body": "We will retry the missing information when you reconnect. Available results remain visible, with their date and status."
+        },
+        {
+          "type": "card",
+          "title": "If you change the boundary",
+          "body": "Soil and climate analysis, feasibility, costs, comparison and chat context must refresh for the new plot."
+        }
+      ],
+      "primary": {
+        "label": "Retry connection",
+        "target": "analysis"
+      },
+      "secondary": {
+        "label": "Review saved plan",
+        "target": "saved"
+      }
+    }
+  ]
+}

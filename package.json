@@ -1,0 +1,22 @@
+{
+  "name": "agrix-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": ["apps/*", "packages/*"],
+  "engines": { "node": "^22.12.0 || ^24.0.0 || >=26.0.0", "npm": ">=10" },
+  "scripts": {
+    "dev": "npm run dev --workspace @agrix/web",
+    "build": "npm run build --workspace @agrix/web",
+    "preview": "npm run preview --workspace @agrix/web",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p apps/web/tsconfig.node.json",
+    "test": "vitest run && node --test infrastructure/security/*.test.mjs",
+    "security:check": "node scripts/security-check.mjs",
+    "check": "npm run security:check && npm run typecheck && npm test && npm run build && npm run security:check -- --built"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "typescript": "7.0.2",
+    "vitest": "5.1.0"
+  }
+}
