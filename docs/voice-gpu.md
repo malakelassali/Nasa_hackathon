@@ -58,8 +58,7 @@ On the original Windows project checkout, stop the earlier demo with Ctrl+C, the
 On the GPU workstation, use the following commands after the existing GPU setup. Use the same CUDA wheel index that you used for PyTorch.
 
 ```bash
-.venv-gpu/bin/python -m pip install 'torchaudio==2.8.0' --index-url "${AGRIX_TORCH_INDEX:-https://download.pytorch.org/whl/cu128}"
-.venv-gpu/bin/python -m pip install -r requirements-tts-hadra.txt
+bash scripts/gpu-asr.sh setup-voice
 AGRIX_TTS_BACKEND=hadra bash scripts/gpu-asr.sh voice-demo
 ```
 

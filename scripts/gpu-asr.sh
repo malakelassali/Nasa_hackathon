@@ -6,6 +6,7 @@ usage() {
     cat <<'EOF'
 Usage:
   bash scripts/gpu-asr.sh setup
+  bash scripts/gpu-asr.sh setup-voice
   bash scripts/gpu-asr.sh benchmark MANIFEST OUTPUT_DIR
   bash scripts/gpu-asr.sh tune-moulsot MANIFEST OUTPUT_DIR
   bash scripts/gpu-asr.sh voice-demo
@@ -48,7 +49,7 @@ if [[ ${1:-} == setup && $# == 1 ]]; then
     "$py" -m pip check
 elif [[ ( ${1:-} == benchmark || ${1:-} == tune-moulsot ) && $# == 3 ]] \
     || [[ ${1:-} == train && ( $# == 3 || $# == 4 ) ]] \
-    || [[ ( ${1:-} == voice-demo || ${1:-} == voice-server ) && $# == 1 ]]; then
+    || [[ ( ${1:-} == setup-voice || ${1:-} == voice-demo || ${1:-} == voice-server ) && $# == 1 ]]; then
     py=.venv-gpu/bin/python
     if [[ ! -x "$py" ]]; then
         echo "Run bash scripts/gpu-asr.sh setup first." >&2
@@ -75,9 +76,26 @@ bench() {
     "$py" -m agrix_voice.benchmark asr "$1" "$2" --model "$3" --backend "$4" "${@:5}"
 }
 
+check_hadra() {
+    if ! "$py" -c 'import torchaudio; from f5_tts.infer.utils_infer import load_model'; then
+        echo "HADRA dependencies could not be loaded from .venv-gpu." >&2
+        echo "Run bash scripts/gpu-asr.sh setup-voice and check its output." >&2
+        return 1
+    fi
+}
+
 case "$1" in
     setup)
         "$py" -m unittest discover -s tests -v
+        ;;
+    setup-voice)
+        "$py" -m pip install --no-deps 'torchaudio==2.8.0' \
+            --index-url "${AGRIX_TORCH_INDEX:-https://download.pytorch.org/whl/cu128}"
+        "$py" -m pip install 'torch==2.8.0' 'torchaudio==2.8.0' \
+            -r requirements-training.txt -r requirements-test.txt -r requirements-tts-hadra.txt
+        "$py" -m pip check
+        check_hadra
+        echo "HADRA dependencies are ready."
         ;;
     benchmark)
         test -f "$2"
@@ -122,10 +140,9 @@ case "$1" in
         export AGRIX_SPEECHT5_EMBEDDING="${AGRIX_SPEECHT5_EMBEDDING:-data/voice/public-demo-female.npy}"
         if [[ "$AGRIX_TTS_BACKEND" == hadra ]]; then
             export WANDB_MODE=disabled
+            check_hadra
             if [[ "$1" == voice-server && -n ${AGRIX_HADRA_REPLY_DIR:-} ]]; then
                 "$py" -m evaluation.render_hadra_replies "$AGRIX_HADRA_REPLY_DIR"
-            else
-                "$py" -c 'import f5_tts.infer.utils_infer'
             fi
         elif [[ "$AGRIX_TTS_BACKEND" == speecht5 && ! -f "$AGRIX_SPEECHT5_EMBEDDING" ]]; then
             "$py" - <<'PY'
@@ -149,7 +166,7 @@ with destination.open("wb") as output:
     np.save(output, embedding.numpy(), allow_pickle=False)
 PY
         fi
-        echo "Open http://localhost:8000 in your Windows browser."
+        echo "Open http://localhost:8000 in a browser on this computer."
         exec "$py" -m uvicorn agrix_voice.app:configured_app --factory --host 127.0.0.1 --port 8000
         ;;
     train)

@@ -9,8 +9,7 @@ Use the existing GPU checkout and setup. If you already have an AgriX server on 
 ```bash
 cd ~/Nasa_hackathon
 git pull --ff-only origin darija-text-to-speech
-.venv-gpu/bin/python -m pip install 'torchaudio==2.8.0' --index-url "${AGRIX_TORCH_INDEX:-https://download.pytorch.org/whl/cu128}"
-.venv-gpu/bin/python -m pip install -r requirements-tts-hadra.txt
+bash scripts/gpu-asr.sh setup-voice
 bash scripts/gpu-asr.sh voice-server
 ```
 
@@ -27,7 +26,7 @@ uv python install 3.12
 AGRIX_PYTHON="$(uv python find --managed-python 3.12)" bash scripts/gpu-asr.sh setup
 ```
 
-The launcher creates and uses `.venv-gpu`. After setup prints `OK`, install the two HADRA dependencies shown above and start the server.
+The launcher creates and uses `.venv-gpu`. After setup prints `OK`, run `bash scripts/gpu-asr.sh setup-voice` to install and verify HADRA in that same environment. It uses the CUDA wheel index from setup, which defaults to CUDA 12.8. If the server reports that `f5_tts` is missing, rerun `setup-voice`.
 
 ### RTX 5060 with 8 GB
 
