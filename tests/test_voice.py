@@ -85,13 +85,40 @@ class VoiceTests(unittest.TestCase):
             crop_question = send("آش نقدر نغرس فالضيعة ديالي هاد العام؟")
             self.assertNotEqual(crop_question["reply"], greeting["reply"])
             self.assertIn("الموسم اللي فات", crop_question["reply"])
-            send("لحظة")
+            clarification = send("لحظة")
+            self.assertNotEqual(clarification["reply"], crop_question["reply"])
             irrigation_question = send("قمح.")
             self.assertIn("السقي", irrigation_question["reply"])
             result = send("ما عنديش")
             self.assertEqual(result["farm"]["previous_crop"], "القمح")
             self.assertEqual(result["farm"]["irrigation"], "rainfed")
             self.assertEqual(result["result"]["source"], "development_mock")
+
+    def test_crop_history_answers_accept_variations(self):
+        with TestClient(create_app()) as client:
+            for answer, expected_crop in (
+                ("العام اللي فات كان عندي البطاطا", "البطاطا"),
+                ("j'ai planté des pommes de terre", "البطاطا"),
+                ("l9me7", "القمح"),
+                ("زرعت الشعير، ودابا واش نزرع القمح؟", "الشعير"),
+                ("ما زرعتش القمح، زرعت الشعير", "الشعير"),
+            ):
+                with self.subTest(answer=answer):
+                    first = client.post("/api/chat", json={"text": "بغيت نعرف آش نزرع الموسم الجاي"}).json()
+                    turn = client.post("/api/chat", json={"session_id": first["session_id"], "text": answer}).json()
+                    self.assertEqual(turn["farm"]["previous_crop"], expected_crop)
+                    self.assertIn("السقي", turn["reply"])
+
+    def test_first_time_farming_skips_the_crop_history_question(self):
+        with TestClient(create_app()) as client:
+            first = client.post("/api/chat", json={"text": "بغيت نعرف آش نزرع الموسم الجاي"}).json()
+            session_id = first["session_id"]
+            turn = client.post("/api/chat", json={"session_id": session_id, "text": "أول مرة غادي نزرع"}).json()
+            self.assertIsNone(turn["farm"]["previous_crop"])
+            self.assertIn("السقي", turn["reply"])
+            result = client.post("/api/chat", json={"session_id": session_id, "text": "كنسقي بالتنقيط"}).json()
+            self.assertEqual(result["farm"]["irrigation"], "available")
+            self.assertEqual(result["result"]["source"], "missing")
 
     def test_updates_require_matching_confirmation_and_are_consumed(self):
         adapter = FarmAdapter()

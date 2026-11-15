@@ -169,6 +169,8 @@ LATIN_REPLIES = {
     "راجع هاد المعلومات. واش بغيتي تسجّلها؟": "Raje3 had lma3lomat. Wach bghiti tsjjelha?",
     "آش بالضبط بغيتي تسجّل؟": "Ach beddebt bghiti tsjjel?",
     "آش زرعتي فهاد الأرض الموسم اللي فات؟": "Ach zr3ti f had lard lmoussem li fat?",
+    "قول ليا غير سميت الزرع اللي كان فالعام اللي فات، بحال القمح ولا البطاطا.":
+        "Goul lia ghir smit zre3 li kan f l3am li fat, b7al lqme7 wla lbatata.",
     "واخا، واش عندك السقي ولا كتعتمد غير على الشتا؟": "Wakha. Wach 3endek sseqi wla kat3tamed ghir 3la chta?",
     "سلام! نقدر نعاونك فاختيار الزرع للموسم الجاي. آش بغيتي تعرف على الأرض ديالك؟":
         "Salam! Nqder n3awnek f khtiyar zre3 lmoussem jay. Ach bghiti t3ref 3la lard dyalk?",
