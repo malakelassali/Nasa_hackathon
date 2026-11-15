@@ -4,6 +4,8 @@ import { money, words } from "../demo/copy";
 import { isSceneId, previewBudget } from "../demo/state";
 import type { Block, FixtureItem, SceneId } from "../demo/types";
 import { MapPanel } from "../features/map/MapPanel";
+import { AgricultureIcon } from "./AgricultureIcon";
+import { LandFactorCards } from "../features/land/LandFactorCards";
 
 export function ActionRow({
   label,
@@ -278,7 +280,12 @@ export function BlockRenderer({
   if (block.type === "card")
     return (
       <Card>
-        <h2>{block.title}</h2>
+        <h2 className={block.factor ? "illustrated-heading" : undefined}>
+          {block.factor && (
+            <AgricultureIcon factor={block.factor} size="small" />
+          )}
+          <span>{block.title}</span>
+        </h2>
         <p className="multiline">{block.body}</p>
       </Card>
     );
@@ -308,14 +315,19 @@ export function BlockRenderer({
     if (scene === "returns") return null;
     return (
       <div className="form-group">
-        <SegmentedControl
-          label={block.label ?? ""}
-          options={options.map((label, i) => ({ label, value: String(i) }))}
-          value={String(selected)}
-          onChange={(value) =>
-            dispatch({ type: "choice", key, value: Number(value) })
-          }
-        />
+        <div className={block.factor ? "illustrated-question" : undefined}>
+          {block.factor && (
+            <AgricultureIcon factor={block.factor} size="small" />
+          )}
+          <SegmentedControl
+            label={block.label ?? ""}
+            options={options.map((label, i) => ({ label, value: String(i) }))}
+            value={String(selected)}
+            onChange={(value) =>
+              dispatch({ type: "choice", key, value: Number(value) })
+            }
+          />
+        </div>
         {scene === "farm" && index === 0 && selected === 1 && (
           <div className="nested-question">
             <SegmentedControl
@@ -426,13 +438,20 @@ export function BlockRenderer({
       />
     );
   }
+  if (block.type === "factors")
+    return <LandFactorCards items={items as FixtureItem[]} />;
   if (block.type === "list")
     return (
       <Card className="facts-card">
         <dl className="facts-list">
           {(items as FixtureItem[]).map((item, itemIndex) => (
             <div key={`${item.label}-${itemIndex}`}>
-              <dt>{item.label}</dt>
+              <dt className={item.factor ? "illustrated-fact" : undefined}>
+                {item.factor && (
+                  <AgricultureIcon factor={item.factor} size="small" />
+                )}
+                <span>{item.label}</span>
+              </dt>
               <dd>
                 {scene === "ready" && itemIndex === 2
                   ? money(state.budget, state.locale)

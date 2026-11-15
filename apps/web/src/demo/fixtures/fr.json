@@ -93,27 +93,32 @@
           "label": "3 vérifications sur 5 prêtes"
         },
         {
-          "type": "list",
+          "type": "factors",
           "items": [
             {
               "label": "Historique des pluies",
-              "value": "Prêt"
+              "value": "Prêt",
+              "factor": "rainfall"
             },
             {
               "label": "Propriétés du sol",
-              "value": "Prêt"
+              "value": "Prêt",
+              "factor": "soil"
             },
             {
               "label": "Relief",
-              "value": "Prêt"
+              "value": "Prêt",
+              "factor": "terrain"
             },
             {
               "label": "Humidité du sol",
-              "value": "En cours"
+              "value": "En cours",
+              "factor": "moisture"
             },
             {
               "label": "Historique de la végétation",
-              "value": "En cours"
+              "value": "En cours",
+              "factor": "vegetation"
             }
           ]
         },
@@ -149,23 +154,42 @@
           "body": "Une estimation cartographique ne remplace pas une analyse du sol. Ajoutez la vôtre si vous en avez une."
         },
         {
+          "type": "factors",
+          "items": [
+            {
+              "label": "Historique des pluies",
+              "value": "Estimation régionale · exemple",
+              "factor": "rainfall"
+            },
+            {
+              "label": "Propriétés du sol",
+              "value": "Estimation cartographique · analyse du sol à confirmer",
+              "factor": "soil"
+            },
+            {
+              "label": "Relief",
+              "value": "Estimation de la zone · à vérifier sur place",
+              "factor": "terrain"
+            },
+            {
+              "label": "Humidité du sol",
+              "value": "Contexte régional · exemple",
+              "factor": "moisture"
+            },
+            {
+              "label": "Historique de la végétation",
+              "value": "Contexte satellite · selon la couverture",
+              "factor": "vegetation"
+            }
+          ]
+        },
+        {
           "type": "list",
           "items": [
             {
-              "label": "Pluies · estimation régionale",
-              "value": "Voir l'historique"
-            },
-            {
-              "label": "Humidité du sol · estimation régionale",
-              "value": "Contexte disponible"
-            },
-            {
-              "label": "Relief et végétation",
-              "value": "Voir les détails"
-            },
-            {
               "label": "Analyse du sol · mesure au champ",
-              "value": "Non fourni"
+              "value": "Non fourni",
+              "factor": "soil"
             }
           ]
         },
@@ -189,7 +213,8 @@
         {
           "type": "chips",
           "label": "Accès à l'eau",
-          "items": ["Pluvial", "Irrigué", "Je ne sais pas"]
+          "items": ["Pluvial", "Irrigué", "Je ne sais pas"],
+          "factor": "moisture"
         },
         {
           "type": "input",
@@ -199,12 +224,14 @@
         {
           "type": "chips",
           "label": "Culture précédente",
-          "items": ["Blé", "Autre culture", "Je ne sais pas"]
+          "items": ["Blé", "Autre culture", "Je ne sais pas"],
+          "factor": "vegetation"
         },
         {
           "type": "chips",
           "label": "Avez-vous une analyse du sol ?",
-          "items": ["Ajouter une analyse", "Pas encore"]
+          "items": ["Ajouter une analyse", "Pas encore"],
+          "factor": "soil"
         },
         {
           "type": "note",
@@ -225,22 +252,26 @@
         {
           "type": "chips",
           "label": "Accès aux machines",
-          "items": ["Louer sur place", "Matériel possédé", "Inconnu"]
+          "items": ["Louer sur place", "Matériel possédé", "Inconnu"],
+          "factor": "machinery"
         },
         {
           "type": "chips",
           "label": "Main-d'œuvre disponible",
-          "items": ["Famille + salariés", "Salariés", "Inconnu"]
+          "items": ["Famille + salariés", "Salariés", "Inconnu"],
+          "factor": "labor"
         },
         {
           "type": "chips",
           "label": "Objectif principal",
-          "items": ["Moins d'argent à avancer", "Fourrage", "Meilleure marge"]
+          "items": ["Moins d'argent à avancer", "Fourrage", "Meilleure marge"],
+          "factor": "goal"
         },
         {
           "type": "chips",
           "label": "Où vendrez-vous ?",
-          "items": ["Coopérative", "Acheteur local", "Inconnu"]
+          "items": ["Coopérative", "Acheteur local", "Inconnu"],
+          "factor": "market"
         },
         {
           "type": "note",
@@ -694,7 +725,8 @@
         {
           "type": "card",
           "title": "Commencez par une coopérative locale",
-          "body": "Renseignez-vous sur les semences certifiées, les prestataires de récolte et les acheteurs. Confirmez les disponibilités à vos dates."
+          "body": "Renseignez-vous sur les semences certifiées, les prestataires de récolte et les acheteurs. Confirmez les disponibilités à vos dates.",
+          "factor": "market"
         },
         {
           "type": "menu",
@@ -737,7 +769,8 @@
         {
           "type": "card",
           "title": "Machines · location avec opérateur",
-          "body": "Préparation + semis + récolte\n3 000 DH / parcelle · 1 500 DH / ha\nOpérateur inclus. Confirmez dates et devis."
+          "body": "Préparation + semis + récolte\n3 000 DH / parcelle · 1 500 DH / ha\nOpérateur inclus. Confirmez dates et devis.",
+          "factor": "machinery"
         },
         {
           "type": "chips",
@@ -747,17 +780,20 @@
             "Partagé",
             "Matériel possédé",
             "Comparer l'achat"
-          ]
+          ],
+          "factor": "machinery"
         },
         {
           "type": "card",
           "title": "Équipe · prévoyez les semaines chargées",
-          "body": "Salariés : 8 journées × 250 DH = 2 000 DH\nFamille : 4 journées · comptées à part\nPic : semis et récolte. Équipe à organiser."
+          "body": "Salariés : 8 journées × 250 DH = 2 000 DH\nFamille : 4 journées · comptées à part\nPic : semis et récolte. Équipe à organiser.",
+          "factor": "labor"
         },
         {
           "type": "card",
           "title": "Valoriser le temps familial à part",
-          "body": "À 250 DH/jour, le temps familial vaut 1 000 DH. Ce n'est pas un paiement en espèces dans ce budget."
+          "body": "À 250 DH/jour, le temps familial vaut 1 000 DH. Ce n'est pas un paiement en espèces dans ce budget.",
+          "factor": "labor"
         },
         {
           "type": "note",
@@ -981,23 +1017,28 @@
           "items": [
             {
               "label": "Historique des pluies",
-              "value": "Prêt"
+              "value": "Prêt",
+              "factor": "rainfall"
             },
             {
               "label": "Propriétés du sol",
-              "value": "Prêt"
+              "value": "Prêt",
+              "factor": "soil"
             },
             {
               "label": "Relief",
-              "value": "Prêt"
+              "value": "Prêt",
+              "factor": "terrain"
             },
             {
               "label": "Service d'humidité du sol",
-              "value": "Échec du chargement"
+              "value": "Échec du chargement",
+              "factor": "moisture"
             },
             {
               "label": "Analyse du sol de votre champ",
-              "value": "Non fourni"
+              "value": "Non fourni",
+              "factor": "soil"
             }
           ]
         },
@@ -1031,23 +1072,28 @@
           "items": [
             {
               "label": "Pluies · NASA GPM IMERG",
-              "value": "Historique régional"
+              "value": "Historique régional",
+              "factor": "rainfall"
             },
             {
               "label": "Humidité · NASA SMAP",
-              "value": "Grille régionale de 9 km"
+              "value": "Grille régionale de 9 km",
+              "factor": "moisture"
             },
             {
               "label": "Propriétés du sol · SoilGrids",
-              "value": "Estimation à 250 m"
+              "value": "Estimation à 250 m",
+              "factor": "soil"
             },
             {
               "label": "Végétation · NASA HLS",
-              "value": "Selon la couverture"
+              "value": "Selon la couverture",
+              "factor": "vegetation"
             },
             {
               "label": "Analyse du sol au champ",
-              "value": "Non fourni"
+              "value": "Non fourni",
+              "factor": "soil"
             },
             {
               "label": "Eau pluviale et budget",

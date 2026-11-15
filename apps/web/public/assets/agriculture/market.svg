@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <mask id="pin-center"><rect width="128" height="128" fill="#fff"/><circle cx="64" cy="30" r="5" fill="#000"/></mask>
+  </defs>
+  <circle cx="64" cy="64" r="57" stroke="#285b3f" stroke-width="4"/>
+  <path d="M77 30c0 10-13 24-13 24S51 40 51 30a13 13 0 1 1 26 0Z" fill="#285b3f" mask="url(#pin-center)"/>
+  <path d="M31 58h66l11 16c0 6-5 10-11 10s-11-4-11-10c0 6-5 10-11 10s-11-4-11-10c0 6-5 10-11 10s-11-4-11-10c0 6-5 10-11 10s-11-4-11-10l11-16Z" fill="#285b3f"/>
+  <path d="M34 81v23h60V81M29 105h70" stroke="#285b3f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#285b3f"><circle cx="49" cy="96" r="8"/><circle cx="64" cy="92" r="8"/><circle cx="79" cy="96" r="8"/></g>
+</svg>

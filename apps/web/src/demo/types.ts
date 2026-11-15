@@ -49,7 +49,29 @@ export type LocationStage =
   | "unavailable"
   | "address"
   | null;
-export type FixtureItem = { label: string; value?: string; target?: string };
+export const LAND_FACTOR_IDS = [
+  "rainfall",
+  "soil",
+  "terrain",
+  "moisture",
+  "vegetation",
+] as const;
+export type LandFactor = (typeof LAND_FACTOR_IDS)[number];
+export const FARM_RESOURCE_ICON_IDS = [
+  "machinery",
+  "labor",
+  "goal",
+  "market",
+] as const;
+export type AgricultureIconName =
+  | LandFactor
+  | (typeof FARM_RESOURCE_ICON_IDS)[number];
+export type FixtureItem = {
+  label: string;
+  value?: string;
+  target?: string;
+  factor?: AgricultureIconName;
+};
 export type Block = {
   type: string;
   label?: string;
@@ -57,6 +79,7 @@ export type Block = {
   body?: string;
   value?: string;
   target?: string;
+  factor?: AgricultureIconName;
   role?: "user" | "assistant";
   items?: string[] | FixtureItem[];
   columns?: string[];

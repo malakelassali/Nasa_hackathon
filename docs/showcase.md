@@ -2,6 +2,14 @@
 
 The product specification in `References/AgriX_Product_Spec.md` defines the future application. This showcase demonstrates its interaction flow using an illustrative two-hectare Settat plot. It is for reviewing the UI, language and states; its sample findings are not a diagnosis or forecast.
 
+The land analysis and summary pair five colored agricultural illustrations with readable translated labels and status text. Matching smaller icons identify source rows, missing-data rows and the farm's water, previous-crop and soil-test questions. The same illustrations are used on desktop and phone; direction changes do not mirror their artwork. Field measurements remain separate from regional estimates.
+
+[Illustration preview for team review](previews/agricultural-icons.png).
+
+The work-and-sales questions also use green circular icons for machinery access, available labor, the main goal and where to sell. Their answer buttons keep the full available width on phones. Matching machinery/labor icons identify resource reports, and the market icon identifies the local cooperative card.
+
+[Work and sales icon preview](previews/farm-resources-icons.png). In the running showcase, use **Showcase controls → Who and what can help?** to review these four questions directly.
+
 | Product flow | Showcase behavior | Future real capability |
 |---|---|---|
 | Find and confirm a plot | Local basemap, sample address result, point editing, undo/redraw, confirmation and invalid-outline state | Search/geocoding, live map, real geometry validation and area calculations |

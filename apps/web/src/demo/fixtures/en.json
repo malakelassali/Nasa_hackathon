@@ -93,27 +93,32 @@
           "label": "3 of 5 checks ready"
         },
         {
-          "type": "list",
+          "type": "factors",
           "items": [
             {
               "label": "Rainfall history",
-              "value": "Ready"
+              "value": "Ready",
+              "factor": "rainfall"
             },
             {
               "label": "Soil properties",
-              "value": "Ready"
+              "value": "Ready",
+              "factor": "soil"
             },
             {
               "label": "Terrain",
-              "value": "Ready"
+              "value": "Ready",
+              "factor": "terrain"
             },
             {
               "label": "Soil moisture",
-              "value": "Checking"
+              "value": "Checking",
+              "factor": "moisture"
             },
             {
               "label": "Vegetation history",
-              "value": "Checking"
+              "value": "Checking",
+              "factor": "vegetation"
             }
           ]
         },
@@ -149,23 +154,42 @@
           "body": "Map estimates cannot replace a soil test. Add your own test if you have one."
         },
         {
+          "type": "factors",
+          "items": [
+            {
+              "label": "Rainfall history",
+              "value": "Regional estimate · example",
+              "factor": "rainfall"
+            },
+            {
+              "label": "Soil properties",
+              "value": "Map estimate · check with a soil test",
+              "factor": "soil"
+            },
+            {
+              "label": "Terrain",
+              "value": "Area estimate · verify on site",
+              "factor": "terrain"
+            },
+            {
+              "label": "Soil moisture",
+              "value": "Regional context · example",
+              "factor": "moisture"
+            },
+            {
+              "label": "Vegetation history",
+              "value": "Satellite context · coverage dependent",
+              "factor": "vegetation"
+            }
+          ]
+        },
+        {
           "type": "list",
           "items": [
             {
-              "label": "Rainfall · regional estimate",
-              "value": "Review history"
-            },
-            {
-              "label": "Soil moisture · regional estimate",
-              "value": "Available context"
-            },
-            {
-              "label": "Terrain and vegetation",
-              "value": "See details"
-            },
-            {
               "label": "Soil test · field measurement",
-              "value": "Not provided"
+              "value": "Not provided",
+              "factor": "soil"
             }
           ]
         },
@@ -189,7 +213,8 @@
         {
           "type": "chips",
           "label": "Water access",
-          "items": ["Rainfed", "Irrigated", "I don't know"]
+          "items": ["Rainfed", "Irrigated", "I don't know"],
+          "factor": "moisture"
         },
         {
           "type": "input",
@@ -199,12 +224,14 @@
         {
           "type": "chips",
           "label": "Previous crop",
-          "items": ["Wheat", "Other crop", "I don't know"]
+          "items": ["Wheat", "Other crop", "I don't know"],
+          "factor": "vegetation"
         },
         {
           "type": "chips",
           "label": "Have a soil test?",
-          "items": ["Add a test", "Not yet"]
+          "items": ["Add a test", "Not yet"],
+          "factor": "soil"
         },
         {
           "type": "note",
@@ -225,22 +252,26 @@
         {
           "type": "chips",
           "label": "Machinery access",
-          "items": ["Hire locally", "Owned", "Unknown"]
+          "items": ["Hire locally", "Owned", "Unknown"],
+          "factor": "machinery"
         },
         {
           "type": "chips",
           "label": "Available labor",
-          "items": ["Family + hired", "Hired", "Unknown"]
+          "items": ["Family + hired", "Hired", "Unknown"],
+          "factor": "labor"
         },
         {
           "type": "chips",
           "label": "Main goal",
-          "items": ["Lower cash need", "Fodder", "Higher margin"]
+          "items": ["Lower cash need", "Fodder", "Higher margin"],
+          "factor": "goal"
         },
         {
           "type": "chips",
           "label": "Where will you sell?",
-          "items": ["Cooperative", "Local buyer", "Unknown"]
+          "items": ["Cooperative", "Local buyer", "Unknown"],
+          "factor": "market"
         },
         {
           "type": "note",
@@ -694,7 +725,8 @@
         {
           "type": "card",
           "title": "Start with a local cooperative",
-          "body": "Ask about certified seed, harvest contractors and buyers. Confirm what is available for your dates."
+          "body": "Ask about certified seed, harvest contractors and buyers. Confirm what is available for your dates.",
+          "factor": "market"
         },
         {
           "type": "menu",
@@ -737,22 +769,26 @@
         {
           "type": "card",
           "title": "Machinery · hire with an operator",
-          "body": "Land preparation + sowing + harvest\n3,000 DH / plot · 1,500 DH / ha\nOperator included. Confirm dates and quote."
+          "body": "Land preparation + sowing + harvest\n3,000 DH / plot · 1,500 DH / ha\nOperator included. Confirm dates and quote.",
+          "factor": "machinery"
         },
         {
           "type": "chips",
           "label": "Explore access",
-          "items": ["Hire", "Shared", "Owned", "Compare buying"]
+          "items": ["Hire", "Shared", "Owned", "Compare buying"],
+          "factor": "machinery"
         },
         {
           "type": "card",
           "title": "People · plan the busy weeks",
-          "body": "Paid: 8 person-days × 250 DH = 2,000 DH\nFamily: 4 person-days · shown separately\nPeak: sowing and harvest weeks. Workers not yet arranged."
+          "body": "Paid: 8 person-days × 250 DH = 2,000 DH\nFamily: 4 person-days · shown separately\nPeak: sowing and harvest weeks. Workers not yet arranged.",
+          "factor": "labor"
         },
         {
           "type": "card",
           "title": "Value family time separately",
-          "body": "At 250 DH/day, family time is 1,000 DH. It is not a cash payment in this budget."
+          "body": "At 250 DH/day, family time is 1,000 DH. It is not a cash payment in this budget.",
+          "factor": "labor"
         },
         {
           "type": "note",
@@ -976,23 +1012,28 @@
           "items": [
             {
               "label": "Rainfall history",
-              "value": "Ready"
+              "value": "Ready",
+              "factor": "rainfall"
             },
             {
               "label": "Soil properties",
-              "value": "Ready"
+              "value": "Ready",
+              "factor": "soil"
             },
             {
               "label": "Terrain",
-              "value": "Ready"
+              "value": "Ready",
+              "factor": "terrain"
             },
             {
               "label": "Soil moisture service",
-              "value": "Could not load"
+              "value": "Could not load",
+              "factor": "moisture"
             },
             {
               "label": "Soil test from your field",
-              "value": "Not provided"
+              "value": "Not provided",
+              "factor": "soil"
             }
           ]
         },
@@ -1026,23 +1067,28 @@
           "items": [
             {
               "label": "Rainfall · NASA GPM IMERG",
-              "value": "Regional history"
+              "value": "Regional history",
+              "factor": "rainfall"
             },
             {
               "label": "Moisture · NASA SMAP",
-              "value": "9 km regional grid"
+              "value": "9 km regional grid",
+              "factor": "moisture"
             },
             {
               "label": "Soil properties · SoilGrids",
-              "value": "250 m estimate"
+              "value": "250 m estimate",
+              "factor": "soil"
             },
             {
               "label": "Vegetation · NASA HLS",
-              "value": "Coverage dependent"
+              "value": "Coverage dependent",
+              "factor": "vegetation"
             },
             {
               "label": "Field soil test",
-              "value": "Not provided"
+              "value": "Not provided",
+              "factor": "soil"
             },
             {
               "label": "Rainfed access and budget",

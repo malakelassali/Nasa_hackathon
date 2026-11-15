@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="water" x1="52" y1="13" x2="81" y2="79" gradientUnits="userSpaceOnUse"><stop stop-color="#b6e7f3"/><stop offset="1" stop-color="#56b3d5"/></linearGradient>
+    <linearGradient id="earth" x1="25" y1="80" x2="107" y2="117" gradientUnits="userSpaceOnUse"><stop stop-color="#d5a06a"/><stop offset="1" stop-color="#9c683e"/></linearGradient>
+  </defs>
+  <ellipse cx="64" cy="118" rx="45" ry="5" fill="#e5eddf"/>
+  <path d="M16 82c17-8 31-7 48-1 17 6 31 6 48-1v20c0 11-9 20-20 20H36c-11 0-20-9-20-20V82Z" fill="url(#earth)"/>
+  <path d="M16 103c15-5 30-3 47 2 17 5 32 5 49-1v8c-5 5-12 8-20 8H36c-8 0-15-3-20-8v-9Z" fill="#e2b880"/>
+  <path d="M16 81c17-8 31-7 48-1 17 6 31 6 48-1V67c-17 7-31 7-48 1-17-6-31-7-48 1v12Z" fill="#7da845" stroke="#285b3f" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M16 82v18c0 11 9 20 20 20h56c11 0 20-9 20-20V80" stroke="#285b3f" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M64 9S39 41 39 58a25 25 0 0 0 50 0C89 41 64 9 64 9Z" fill="url(#water)" stroke="#285b3f" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M59 28C51 40 46 50 46 58c0 7 3 12 8 15" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+  <g fill="#f2d3a7"><circle cx="30" cy="92" r="4"/><circle cx="47" cy="95" r="3"/><circle cx="82" cy="97" r="4"/><circle cx="100" cy="91" r="3"/></g>
+  <g fill="#8a5b34"><circle cx="38" cy="111" r="3"/><circle cx="70" cy="113" r="3"/><circle cx="93" cy="112" r="3"/></g>
+</svg>

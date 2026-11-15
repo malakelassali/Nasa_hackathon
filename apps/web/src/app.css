@@ -717,6 +717,105 @@ h2 {
 .facts-list {
   margin: 0;
 }
+.agriculture-icon {
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+  user-select: none;
+}
+.agriculture-icon--large {
+  width: 96px;
+  height: 96px;
+}
+.agriculture-icon--small {
+  width: 56px;
+  height: 56px;
+}
+.land-factors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+  gap: 16px;
+  margin: 0;
+}
+.land-factor-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: 148px;
+  padding: 20px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+}
+.land-factor-card .agriculture-icon {
+  position: absolute;
+  inset-inline-start: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.land-factor-card dt,
+.land-factor-card dd {
+  padding-inline-start: 110px;
+  overflow-wrap: anywhere;
+}
+.land-factor-card dt {
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+.land-factor-card dd {
+  margin: 8px 0 0;
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.illustrated-fact {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.illustrated-fact > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.facts-list > div:has(.illustrated-fact) {
+  align-items: center;
+}
+.illustrated-question {
+  position: relative;
+}
+.illustrated-question > .agrix-segmented {
+  width: 100%;
+  min-width: 0;
+}
+.illustrated-question > .agriculture-icon {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: 64px;
+  height: 64px;
+}
+.illustrated-question > .agrix-segmented > legend {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 64px;
+  padding-inline-start: 80px;
+  padding-block: 8px;
+  margin-block-end: 16px;
+  font-size: 17px;
+}
+.illustrated-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.illustrated-heading > span {
+  min-width: 0;
+}
 .facts-list > div {
   display: flex;
   align-items: flex-start;
@@ -1486,6 +1585,15 @@ progress::-webkit-progress-value {
   }
 }
 @media (max-width: 760px) {
+  .facts-list > div:has(.illustrated-fact) {
+    display: block;
+  }
+  .facts-list > div:has(.illustrated-fact) > dd {
+    max-width: none;
+    padding-inline-start: 70px;
+    margin-top: 6px;
+    text-align: start;
+  }
   .desktop-location-label {
     display: none;
   }
