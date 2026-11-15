@@ -23,8 +23,24 @@ if [[ ${1:-} == setup && $# == 1 ]]; then
         exit 1
     fi
     nvidia-smi
-    python3 -c 'import sys; sys.exit(0 if sys.version_info[:2] in ((3, 11), (3, 12)) else "Use Python 3.11 or 3.12.")'
-    python3 -m venv .venv-gpu
+    candidates=(python3.12 python3.11 python3)
+    if [[ -n ${AGRIX_PYTHON:-} ]]; then
+        candidates=("$AGRIX_PYTHON")
+    fi
+    setup_python=""
+    for candidate in "${candidates[@]}"; do
+        if command -v "$candidate" >/dev/null && "$candidate" -c \
+            'import sys; raise SystemExit(sys.version_info[:2] not in ((3, 11), (3, 12)))'; then
+            setup_python="$candidate"
+            break
+        fi
+    done
+    if [[ -z "$setup_python" ]]; then
+        echo "Python 3.11 or 3.12 is required. Install it or set AGRIX_PYTHON to its executable. See docs/voice-server.md." >&2
+        exit 1
+    fi
+    "$setup_python" --version
+    "$setup_python" -m venv .venv-gpu
     py=.venv-gpu/bin/python
     "$py" -m pip install --upgrade pip
     "$py" -m pip install 'torch==2.8.0' --index-url "${AGRIX_TORCH_INDEX:-https://download.pytorch.org/whl/cu128}"

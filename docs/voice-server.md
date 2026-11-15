@@ -16,6 +16,19 @@ bash scripts/gpu-asr.sh voice-server
 
 The first start may download HADRA and prepare the fixed replies. Later starts reuse the WAVs in `data/voice/hadra-server-f1`. The server loads both models before accepting requests. Wait for Uvicorn to report that it is running. Fixed replies play from those WAVs. New replies are generated on the GPU with the same synthesis settings. Use a fresh `AGRIX_HADRA_REPLY_DIR` when changing voice or checkpoint.
 
+### Fix a Python version error during setup
+
+From the checkout, pull the branch and run `bash scripts/gpu-asr.sh setup`. It checks for Python 3.12 and 3.11 even when another environment provides the active `python3`. If neither is installed, install Python 3.12 with uv and pass its executable directly. [uv installation](https://docs.astral.sh/uv/getting-started/installation/) · [Manage Python versions with uv](https://docs.astral.sh/uv/concepts/python-versions/)
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.local/bin:$PATH"
+uv python install 3.12
+AGRIX_PYTHON="$(uv python find --managed-python 3.12)" bash scripts/gpu-asr.sh setup
+```
+
+The launcher creates and uses `.venv-gpu`. After setup prints `OK`, install the two HADRA dependencies shown above and start the server.
+
 ### RTX 5060 with 8 GB
 
 Keep the CUDA 12.8 install commands above. Replace the server launch line with:
@@ -28,14 +41,21 @@ This selects the FP16 MoulSot mode used in the earlier GPU benchmark, where Moul
 
 ## 2. Give your phone and computer a private HTTPS address
 
-Install Tailscale on the **Windows side of the RTX workstation**, and on each phone or computer that will use the app. Sign in to the same private Tailscale network on all devices. In an Administrator PowerShell window on the RTX workstation, run:
+Install Tailscale on the RTX workstation and the devices that will use the app. On native Linux, open a second terminal on the RTX workstation while AgriX is running. [Install Tailscale on Linux](https://tailscale.com/docs/install/linux)
+
+```bash
+curl -fsS http://127.0.0.1:8000/api/status
+sudo tailscale serve --bg http://127.0.0.1:8000
+```
+
+For Windows with WSL, install Tailscale on the Windows side and run the equivalent commands in Administrator PowerShell:
 
 ```powershell
 Invoke-RestMethod http://localhost:8000/api/status
 tailscale serve --bg http://127.0.0.1:8000
 ```
 
-The status check should show `synthesis_backend: hadra`. If Windows cannot reach localhost, check that the Ubuntu terminal is still running the app and that WSL localhost forwarding works before starting Serve. If Tailscale asks you to enable HTTPS certificates, follow its sign-in prompt, then repeat the Serve command. Serve prints a private `https://…ts.net` URL. Use Serve for private access. [Tailscale installation](https://tailscale.com/download) · [Tailscale Serve](https://tailscale.com/docs/reference/examples/serve) · [WSL localhost forwarding](https://learn.microsoft.com/en-us/windows/wsl/networking#accessing-linux-networking-apps-from-windows-localhost)
+The status check should show `synthesis_backend: hadra`. If Windows cannot reach localhost, check that the Ubuntu terminal is still running the app and that WSL localhost forwarding works before starting Serve. If Tailscale asks you to enable HTTPS certificates, follow its sign-in prompt, then repeat the Serve command. Serve prints a private `https://…ts.net` URL. Share the machine with the intended Tailscale account and send them that address. [Tailscale Serve](https://tailscale.com/docs/reference/examples/serve) · [Machine sharing](https://tailscale.com/docs/features/sharing) · [WSL localhost forwarding](https://learn.microsoft.com/en-us/windows/wsl/networking#accessing-linux-networking-apps-from-windows-localhost)
 
 Open the printed HTTPS URL in Safari or Chrome on your phone, or in your current computer's browser. Allow microphone access when prompted. You can add the page to your home screen. HTTPS lets the browser offer microphone access from a different device. [Browser microphone requirements](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#privacy_and_security)
 
