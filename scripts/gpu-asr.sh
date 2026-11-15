@@ -93,7 +93,12 @@ case "$1" in
         unset AGRIX_ASR_ADAPTER
         export AGRIX_TTS_BACKEND="${AGRIX_TTS_BACKEND:-speecht5}"
         if [[ "$1" == voice-server ]]; then
-            export AGRIX_TTS_BACKEND=hadra AGRIX_PRELOAD_VOICE=1 AGRIX_ASR_DTYPE=float32
+            export AGRIX_TTS_BACKEND=hadra AGRIX_PRELOAD_VOICE=1
+            export AGRIX_ASR_DTYPE="${AGRIX_ASR_DTYPE:-float32}"
+            case "$AGRIX_ASR_DTYPE" in
+                float16|float32) echo "MoulSot precision: $AGRIX_ASR_DTYPE" ;;
+                *) echo "AGRIX_ASR_DTYPE must be float16 or float32." >&2; exit 2 ;;
+            esac
             if [[ -z ${AGRIX_TTS_MODEL:-} && -z ${AGRIX_HADRA_REFERENCE_WAV:-} && -z ${AGRIX_HADRA_REFERENCE_TEXT:-} ]]; then
                 export AGRIX_HADRA_REPLY_DIR="${AGRIX_HADRA_REPLY_DIR:-data/voice/hadra-server-f1}"
             fi
