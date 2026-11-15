@@ -72,6 +72,27 @@ class VoiceTests(unittest.TestCase):
             self.assertEqual(result["farm"]["irrigation"], "rainfed")
             self.assertEqual(result["farm"]["previous_crop"], "القمح")
 
+    def test_darija_planting_question_and_short_followups(self):
+        with TestClient(create_app()) as client:
+            greeting = client.post("/api/chat", json={"text": "سلام، عندي سؤال على الأرض"}).json()
+            session_id = greeting["session_id"]
+
+            def send(text):
+                response = client.post("/api/chat", json={"session_id": session_id, "text": text})
+                self.assertEqual(response.status_code, 200)
+                return response.json()
+
+            crop_question = send("آش نقدر نغرس فالضيعة ديالي هاد العام؟")
+            self.assertNotEqual(crop_question["reply"], greeting["reply"])
+            self.assertIn("الموسم اللي فات", crop_question["reply"])
+            send("لحظة")
+            irrigation_question = send("قمح.")
+            self.assertIn("السقي", irrigation_question["reply"])
+            result = send("ما عنديش")
+            self.assertEqual(result["farm"]["previous_crop"], "القمح")
+            self.assertEqual(result["farm"]["irrigation"], "rainfed")
+            self.assertEqual(result["result"]["source"], "development_mock")
+
     def test_updates_require_matching_confirmation_and_are_consumed(self):
         adapter = FarmAdapter()
         with TestClient(create_app(tools=adapter, chat=SavePlanner())) as client:

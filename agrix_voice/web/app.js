@@ -16,6 +16,8 @@ let speechEnabled = false;
 let speechTimeout = 130000;
 let micEnabled = false;
 let objectUrl;
+let pendingSpeech;
+let speechInFlight = false;
 let confirmationButtons = [];
 
 function updateControls() {
@@ -47,26 +49,48 @@ function addMessage(role, text) {
   return message;
 }
 
-async function speak(text) {
+function clearSpeech() {
+  pendingSpeech = undefined;
   audio.pause();
   if (objectUrl) URL.revokeObjectURL(objectUrl);
   objectUrl = undefined;
+  audio.removeAttribute("src");
   audio.hidden = stopSpeech.hidden = true;
+}
+
+function speak(text) {
   if (!speechEnabled) {
     status.textContent = "الجواب مكتوب الفوق.";
     return;
   }
   status.textContent = "كنوجّد الصوت…";
-  try {
-    const response = await request("/api/speech", { text }, speechTimeout);
-    objectUrl = URL.createObjectURL(await response.blob());
-    audio.src = objectUrl;
-    audio.hidden = stopSpeech.hidden = false;
-    status.textContent = "الجواب واجد. تقدر تسمعو.";
-    await audio.play().catch(() => {});
-  } catch {
-    status.textContent = "الصوت ما خدمش دابا. تقدر تقرا الجواب الفوق.";
+  pendingSpeech = { text };
+  if (!speechInFlight) void prepareSpeech();
+}
+
+async function prepareSpeech() {
+  speechInFlight = true;
+  // Keep one synthesis request in flight and discard audio for superseded turns.
+  while (pendingSpeech) {
+    const reply = pendingSpeech;
+    try {
+      const response = await request("/api/speech", { text: reply.text }, speechTimeout);
+      const wav = await response.blob();
+      if (reply !== pendingSpeech) continue;
+      objectUrl = URL.createObjectURL(wav);
+      audio.src = objectUrl;
+      audio.hidden = stopSpeech.hidden = false;
+      status.textContent = "الجواب واجد. تقدر تسمعو.";
+      void audio.play().catch(() => {});
+    } catch {
+      if (reply === pendingSpeech) {
+        status.textContent = "الصوت ما خدمش دابا. تقدر تقرا الجواب الفوق.";
+      }
+    } finally {
+      if (reply === pendingSpeech) pendingSpeech = undefined;
+    }
   }
+  speechInFlight = false;
 }
 
 function clearConfirmation() {
@@ -90,6 +114,7 @@ function offerConfirmation(message, proposal) {
     button.className = approved ? "" : "secondary";
     button.addEventListener("click", async () => {
       busy = true;
+      clearSpeech();
       updateControls();
       try {
         const response = await request("/api/confirm", {
@@ -98,7 +123,7 @@ function offerConfirmation(message, proposal) {
         clearConfirmation();
         const { reply } = await response.json();
         addMessage("assistant", reply);
-        await speak(reply);
+        speak(reply);
       } catch {
         clearConfirmation();
         status.textContent = "ما قدرناش نأكدو الطلب. عاود صيفطو.";
@@ -119,7 +144,7 @@ mic.addEventListener("click", async () => {
     await stopRecording();
     return;
   }
-  audio.pause();
+  clearSpeech();
   busy = true;
   updateControls();
   status.textContent = "كنحلّ الميكرو…";
@@ -159,7 +184,7 @@ chat.addEventListener("submit", async event => {
   const text = input.value.trim();
   if (busy || !text) return;
   busy = true;
-  audio.pause();
+  clearSpeech();
   updateControls();
   status.textContent = "كنوجّد الجواب…";
   try {
@@ -170,7 +195,7 @@ chat.addEventListener("submit", async event => {
     clearConfirmation();
     addMessage("user", text);
     offerConfirmation(addMessage("assistant", turn.reply), turn.confirmation);
-    await speak(turn.reply);
+    speak(turn.reply);
   } catch (error) {
     if (error.message === "409") {
       session = undefined;
@@ -186,8 +211,8 @@ chat.addEventListener("submit", async event => {
   }
 });
 
-audio.addEventListener("play", () => { status.textContent = "كنقرا الجواب…"; });
-audio.addEventListener("ended", () => { status.textContent = "تقدر تكمّل المحادثة."; });
+audio.addEventListener("play", () => { if (!audio.hidden) status.textContent = "كنقرا الجواب…"; });
+audio.addEventListener("ended", () => { if (!audio.hidden) status.textContent = "تقدر تكمّل المحادثة."; });
 stopSpeech.addEventListener("click", () => {
   audio.pause();
   audio.currentTime = 0;

@@ -28,6 +28,7 @@ READ_OPERATIONS = {
     "rotation": "get_crop_rotation_recommendations", "compare": "compare_rotation_strategies",
 }
 WRITE_OPERATIONS = {"save_preferences": "update_farmer_preferences", "save_observation": "add_farming_observation"}
+ROTATION_INTENTS = {"rotation", "compare"}
 Intent = Literal["chat", "profile", "plots", "history", "climate", "soil", "rotation", "compare",
                  "save_preferences", "save_observation"]
 
@@ -57,12 +58,13 @@ class SessionMissing(ValueError):
     pass
 
 
-def rule_plan(text, prior):
-    lower = text.casefold()
+def rule_plan(text, prior, farm):
+    lower = re.sub(r"[\u064b-\u065f\u0670]", "", text.casefold())
+    short_answer = lower.strip(" .!؟،?")
     intent = "chat"
     if re.search(r"قارن|compar", lower):
         intent = "compare"
-    elif re.search(r"زرع|تناوب|rotation|نصح|نبدل", lower):
+    elif re.search(r"زرع|غرس|تناوب|rotation|نصح|نبدل", lower):
         intent = "rotation"
     elif re.search(r"مناخ|طقس|météo|climat", lower):
         intent = "climate"
@@ -70,18 +72,26 @@ def rule_plan(text, prior):
         intent = "soil"
 
     facts = {}
-    if re.search(r"زرعت(?:\b|ي)|j.ai cultivé|j.ai semé", lower):
-        for crop, terms in {
-            "القمح": r"القمح|blé", "الشعير": r"الشعير|orge", "الذرة": r"الذرة|maïs",
-            "الحمص": r"الحمص|pois chiche", "العدس": r"العدس|lentille",
-        }.items():
-            if re.search(terms, lower):
-                facts["previous_crop"] = crop
-    if re.search(r"غير الشتا|بوري|بلا سقي|sans irrigation|pluvial", lower):
+    reporting_crop = re.search(r"زرعت(?:\b|ي)|زرعنا\b|كنت زارع|كان عندنا|j.ai cultivé|j.ai semé", lower)
+    rotation_context = prior in ROTATION_INTENTS
+    for crop, terms in {
+        "القمح": r"(?:ال)?قمح|(?:le )?blé", "الشعير": r"(?:ال)?شعير|(?:l.)?orge",
+        "الذرة": r"(?:ال)?ذرة|(?:le )?maïs", "الحمص": r"(?:ال)?حمص|pois chiche",
+        "العدس": r"(?:ال)?عدس|lentille",
+    }.items():
+        if ((reporting_crop and re.search(terms, lower))
+                or (rotation_context and re.fullmatch(terms, short_answer))):
+            facts["previous_crop"] = crop
+            break
+
+    waiting_for_irrigation = rotation_context and farm.previous_crop and not farm.irrigation
+    if (re.search(r"غير الشتا|على الشتا|بوري|بلا سقي|ما عندي(?:نا)?ش السقي|sans irrigation|pluvial", lower)
+            or (waiting_for_irrigation and short_answer in {"لا", "ما عنديش", "ما كاينش"})):
         facts["irrigation"] = "rainfed"
     elif re.search(r"الم[ااء]+ قليل|ما عنديش الم[ااء]+ بزاف|peu d.eau|السقي قليل", lower):
         facts["irrigation"] = "limited"
-    elif re.search(r"عندي السقي|كاين السقي|j.ai l.irrigation", lower):
+    elif (re.search(r"عندي السقي|عندنا السقي|كاين السقي|j.ai l.irrigation", lower)
+            or (waiting_for_irrigation and short_answer in {"عندي", "عندنا", "كاين"})):
         facts["irrigation"] = "available"
     area = re.search(r"(\d{1,5}(?:[.,]\d{1,3})?|جوج|واحد|ثلاثة)\s*(?:هكتار|hectares?|ha\b)", lower)
     if area:
@@ -90,13 +100,9 @@ def rule_plan(text, prior):
         area_ha = area_ha if area_ha is not None else float(value)
         if area_ha > 0:
             facts["area_ha"] = area_ha
-    if prior in {"rotation", "compare"} and not facts.get("previous_crop"):
-        standalone_crops = {"القمح": "القمح", "le blé": "القمح", "الشعير": "الشعير",
-                            "الذرة": "الذرة", "الحمص": "الحمص", "العدس": "العدس"}
-        crop = standalone_crops.get(lower.strip(" .!؟،"))
-        if crop:
-            facts["previous_crop"] = crop
-    if intent == "chat" and prior in {"rotation", "compare"} and facts:
+    if intent == "chat" and facts:
+        intent = prior if rotation_context else "rotation"
+    elif intent == "rotation" and prior == "compare" and reporting_crop:
         intent = prior
     return TurnPlan(intent=intent, facts=FarmContext(**facts))
 
@@ -137,7 +143,7 @@ class Assistant:
                 return TurnPlan.model_validate_json(raw), "model"
             except Exception as exc:
                 LOG.info("Conversation parser fallback (%s)", type(exc).__name__)
-        return rule_plan(text, session.intent), "rules"
+        return rule_plan(text, session.intent, session.farm), "rules"
 
     def turn(self, session_id, text):
         session_id, session = self.session(session_id)
@@ -148,7 +154,8 @@ class Assistant:
             session.farm = FarmContext.model_validate({
                 **session.farm.model_dump(), **dict.fromkeys(plan.clear), **facts,
             })
-            session.intent = plan.intent
+            if plan.intent != "chat" or session.intent not in ROTATION_INTENTS:
+                session.intent = plan.intent
             confirmation = None
             result = None
             if plan.intent in WRITE_OPERATIONS and (facts if plan.intent == "save_preferences" else plan.observation):
@@ -161,15 +168,17 @@ class Assistant:
                 reply = "راجع هاد المعلومات. واش بغيتي تسجّلها؟"
             elif plan.intent in WRITE_OPERATIONS:
                 reply = "آش بالضبط بغيتي تسجّل؟"
-            elif plan.intent in {"rotation", "compare"} and not session.farm.previous_crop:
+            elif session.intent in ROTATION_INTENTS and not session.farm.previous_crop:
                 reply = "آش زرعتي فهاد الأرض الموسم اللي فات؟"
-            elif plan.intent in {"rotation", "compare"} and not session.farm.irrigation:
+            elif session.intent in ROTATION_INTENTS and not session.farm.irrigation:
                 reply = "واخا، واش عندك السقي ولا كتعتمد غير على الشتا؟"
             elif plan.intent in READ_OPERATIONS:
                 result = self.tools.call(session_id, READ_OPERATIONS[plan.intent], session.farm)
                 reply = self.grounded_reply(result)
-            else:
+            elif not session.recent and re.match(r"^(?:سلام|السلام|salam|bonjour)\b", text.casefold()):
                 reply = "سلام! نقدر نعاونك فاختيار الزرع للموسم الجاي. آش بغيتي تعرف على الأرض ديالك؟"
+            else:
+                reply = "فهاد الديمو نقدر نعاونك فاختيار الزرع للموسم الجاي. واش بغيتي نقارنو شي اختيارات؟"
             session.recent = (session.recent + [{"farmer": text, "assistant": reply}])[-4:]
             return {"session_id": session_id, "reply": reply, "farm": session.farm.model_dump(),
                     "result": result, "confirmation": confirmation, "planner": planner}

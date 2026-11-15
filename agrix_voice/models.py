@@ -172,6 +172,8 @@ LATIN_REPLIES = {
     "واخا، واش عندك السقي ولا كتعتمد غير على الشتا؟": "Wakha. Wach 3endek sseqi wla kat3tamed ghir 3la chta?",
     "سلام! نقدر نعاونك فاختيار الزرع للموسم الجاي. آش بغيتي تعرف على الأرض ديالك؟":
         "Salam! Nqder n3awnek f khtiyar zre3 lmoussem jay. Ach bghiti t3ref 3la lard dyalk?",
+    "فهاد الديمو نقدر نعاونك فاختيار الزرع للموسم الجاي. واش بغيتي نقارنو شي اختيارات؟":
+        "F had demo nqder n3awnek f khtiyar zre3 lmoussem jay. Wach bghiti nqarnou chi khtiyarat?",
     "فهاد المثال التجريبي، كاين العدس والحمص باش تقارن. خاصنا معطيات ديال الأرض قبل ما نعطيوك توصية.":
         "F had lmitel tejribi, kayn l3des w l7emmes bach t9aren. Khassna m3tiyat dyal lard qbel ma n3tiwk tawsiya.",
     "ما عنديش المعطيات الكافية على هاد الأرض دابا.": "Ma 3endich lm3tiyat lkafya 3la had lard daba.",
